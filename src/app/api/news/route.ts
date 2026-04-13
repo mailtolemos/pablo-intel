@@ -5,6 +5,12 @@ import type { NewsItem } from '@/lib/types';
 export const runtime = 'edge';
 export const revalidate = 0;
 
+// Module-level cache — prevents hammering 30+ RSS feeds on every page load
+interface NewsCache { news: NewsItem[]; updatedAt: string; sourceCount: number; }
+let cachedNews: NewsCache | null = null;
+let newsCacheTime = 0;
+const NEWS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 // ─────────────────────────────────────────────────────────────────────────────
 // FEED REGISTRY
 // Priority tiers: 1 = premium/direct source, 2 = aggregated
@@ -240,7 +246,7 @@ async function fetchFeed(feedUrl: string, source: string, topic: string): Promis
       'User-Agent': 'OilSentinel/2.0 (crude oil market intelligence)',
       'Accept': 'application/rss+xml, application/xml, text/xml, */*',
     },
-    signal: AbortSignal.timeout(7000),
+    signal: AbortSignal.timeout(4500), // 4.5s — reduced from 7s to cap slow feeds
   });
   if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
   const xml = await r.text();
@@ -284,6 +290,11 @@ async function fetchFeed(feedUrl: string, source: string, topic: string): Promis
 // HANDLER
 // ─────────────────────────────────────────────────────────────────────────────
 export async function GET() {
+  // Serve from cache if fresh — avoids fetching 30+ RSS feeds on every load
+  if (cachedNews && Date.now() - newsCacheTime < NEWS_CACHE_TTL) {
+    return NextResponse.json({ ...cachedNews, cached: true });
+  }
+
   const allItems: NewsItem[] = [];
   const seen = new Set<string>();
   const now = Date.now();
@@ -327,9 +338,17 @@ export async function GET() {
 
   const final = [...breaking, ...rest];
 
-  return NextResponse.json({
+  const payload: NewsCache = {
     news: final.slice(0, 60),
     updatedAt: new Date().toISOString(),
     sourceCount: RSS_FEEDS.length,
-  });
+  };
+
+  // Store in module-level cache
+  if (payload.news.length > 0) {
+    cachedNews = payload;
+    newsCacheTime = Date.now();
+  }
+
+  return NextResponse.json(payload);
 }

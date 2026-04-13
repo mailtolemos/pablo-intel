@@ -6,6 +6,7 @@ import {
   Marker, ZoomableGroup, Line,
 } from 'react-simple-maps';
 import type { TankerShip, Chokepoint, ThreatEvent } from '@/lib/types';
+import MetricTooltip from '@/components/MetricTooltip';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -105,6 +106,66 @@ const SHORTAGE_COUNTRIES: Record<string, ShortageData> = {
     issue:        'Indigenous Protests + Political Instability',
     detail:       'Recurring indigenous community blockades of Amazonian oil installations. Amazon crude production (Oriente blend) affected. Government has declared states of emergency multiple times.',
     source:       'Petroecuador, Reuters',
+  },
+
+  // ── Asia — active diesel/petrol shortage warnings ──────────────────────────
+  '586': { // Pakistan
+    severity:     'critical',
+    affectedMbpd: 'import-dependent (~0.5 Mb/d needed)',
+    issue:        'Chronic Fuel Crisis — IMF Austerity + FX Shortage',
+    detail:       'Dollar shortage limits fuel import capacity. IMF conditions force subsidy removal, causing pump-price spikes. Diesel rationing warnings issued repeatedly since 2022. Power sector competes with transport for limited diesel supply.',
+    source:       'Pakistan OGRA, IMF, Reuters',
+  },
+  '144': { // Sri Lanka
+    severity:     'high',
+    affectedMbpd: 'import-dependent (~50 kb/d)',
+    issue:        'Post-2022 Fuel Crisis — Ongoing Rationing',
+    detail:       "Following 2022's catastrophic forex crisis, Sri Lanka still limits fuel access via QR code rationing in multiple provinces. Ceylon Petroleum Corporation operating at near-insolvent levels. IMF bailout ongoing but fuel supply fragile.",
+    source:       'Ceylon Petroleum Corp, IMF, Al Jazeera',
+  },
+  '050': { // Bangladesh
+    severity:     'high',
+    affectedMbpd: 'import-dependent (~90 kb/d)',
+    issue:        'FX Reserves Squeeze — Diesel Import Warnings',
+    detail:       'Bangladesh Petroleum Corporation issued diesel shortage warnings in 2023–2024 as forex reserves fell below 3-month import cover. Government directives to cut non-essential generator fuel use. Power outages linked to diesel shortfall.',
+    source:       'Bangladesh Petroleum Corp, World Bank, Reuters',
+  },
+  '104': { // Myanmar
+    severity:     'high',
+    affectedMbpd: 'import-dependent (~60 kb/d)',
+    issue:        'Military Junta Fuel Crisis — Severe Rationing',
+    detail:       'Since the 2021 military coup, Myanmar faces severe fuel rationing. Long queues at petrol stations, black-market prices 3–5× official rates. Currency collapse and sanctions on the junta restrict import financing. Yangon transport paralysed periodically.',
+    source:       'UN, Radio Free Asia, Reuters',
+  },
+  '524': { // Nepal
+    severity:     'high',
+    affectedMbpd: 'import-dependent (~30 kb/d)',
+    issue:        'Landlocked Supply Dependency — Chronic Shortages',
+    detail:       "Nepal imports 100% of its petroleum from India via Nepal Oil Corporation. Any India–Nepal border friction, Indian refinery shutdowns, or payment disputes triggers immediate shortfalls. NOC frequently operates at a loss; government petrol-saving campaigns are routine.",
+    source:       'Nepal Oil Corporation, Indian Petroleum Ministry, Reuters',
+  },
+  '608': { // Philippines
+    severity:     'moderate',
+    affectedMbpd: 'import-dependent (~400 kb/d)',
+    issue:        'DOE Fuel-Saving Advisories — Import Dependence',
+    detail:       "Philippines DOE regularly issues fuel conservation advisories. Malampaya gas field (domestic supply anchor) in decline. Refining capacity limited after Petron's Bataan refinery partially offline. Price spikes trigger government intervention debates.",
+    source:       'Philippines DOE, Reuters, S&P Platts',
+  },
+  '356': { // India
+    severity:     'moderate',
+    affectedMbpd: '~5.2 Mb/d total demand (rising)',
+    issue:        'LPG / Petrol Saving Campaigns + Price Controls',
+    detail:       "India's government periodically runs 'Give It Up' LPG subsidy reduction campaigns. Petrol prices politically sensitive — pre-election price freezes create supply distortions. India is world's 3rd-largest oil importer; any shortage shocks have global demand implications.",
+    source:       'India PPAC, Ministry of Petroleum, IEA',
+  },
+
+  // ── Brazil — fuel supply stress ────────────────────────────────────────────
+  '076': { // Brazil
+    severity:     'moderate',
+    affectedMbpd: '~3.4 Mb/d production (domestic supply stress)',
+    issue:        'Petrobras Price Volatility + Ethanol vs Petrol Tension',
+    detail:       "Government pressure on Petrobras to suppress petrol prices creates supply distortions. Ethanol vs petrol blend ratios politically contested; flex-fuel vehicle owners face price uncertainty. Diesel truckers' strike (2018 & 2021) paralysed the country — chronic risk remains. Northeast regions report periodic diesel supply delays.",
+    source:       'Petrobras, ANP Brazil, Reuters',
   },
 };
 
@@ -253,10 +314,18 @@ export default function WorldMap() {
           CRUDE INTELLIGENCE
         </span>
         <span className="w-px h-3" style={{ background: '#0f2a42' }} />
-        <span className="text-[9px] font-bold" style={{ color: '#00c8f0' }}>⬡ {stats.totalShips ?? '—'} TANKERS</span>
-        <span className="text-[9px]" style={{ color: '#6b9db8' }}>VLCC <b style={{ color: '#c0d8ec' }}>{stats.vlccs ?? '—'}</b></span>
-        <span className="text-[9px]" style={{ color: '#6b9db8' }}>Suezmax <b style={{ color: '#c0d8ec' }}>{stats.suezmax ?? '—'}</b></span>
-        <span className="text-[9px]" style={{ color: '#6b9db8' }}>Aframax <b style={{ color: '#c0d8ec' }}>{stats.aframax ?? '—'}</b></span>
+        <span className="text-[9px] font-bold" style={{ color: '#00c8f0' }}>
+          ⬡ <MetricTooltip title="Tankers Tracked" description="Total oil tankers (VLCC, Suezmax, Aframax, LR2) tracked via AIS transponder on major global shipping lanes." context="Updated every 30 seconds from AIS feed">{stats.totalShips ?? '—'}</MetricTooltip> TANKERS
+        </span>
+        <span className="text-[9px]" style={{ color: '#6b9db8' }}>VLCC <b style={{ color: '#c0d8ec' }}>
+          <MetricTooltip title="VLCCs Active" description="Very Large Crude Carriers — the largest oil tankers (200,000–320,000 DWT), each carrying ~2 million barrels. Mainly used on Persian Gulf → Asia routes." context="Key indicator of Middle East export flow">{stats.vlccs ?? '—'}</MetricTooltip>
+        </b></span>
+        <span className="text-[9px]" style={{ color: '#6b9db8' }}>Suezmax <b style={{ color: '#c0d8ec' }}>
+          <MetricTooltip title="Suezmax Tankers" description="Mid-size crude tankers (120,000–200,000 DWT) sized to transit the Suez Canal. Carry ~1 million barrels. Used on West Africa → Europe and Mediterranean routes." context="Suez Canal restrictions limit larger vessels">{stats.suezmax ?? '—'}</MetricTooltip>
+        </b></span>
+        <span className="text-[9px]" style={{ color: '#6b9db8' }}>Aframax <b style={{ color: '#c0d8ec' }}>
+          <MetricTooltip title="Aframax Tankers" description="Smaller crude/product tankers (80,000–120,000 DWT) carrying ~500,000–750,000 barrels. Common on North Sea, Baltic, Caribbean, and Black Sea routes." context="Flexible vessels used across multiple regions">{stats.aframax ?? '—'}</MetricTooltip>
+        </b></span>
         <span className="w-px h-3" style={{ background: '#0f2a42' }} />
         <span className="text-[9px] font-medium" style={{ color: '#ffb300' }}>⚠ Hormuz ELEVATED</span>
         <span className="text-[9px] font-medium" style={{ color: '#ff3355' }}>⚠ Red Sea ACTIVE</span>

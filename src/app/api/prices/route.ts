@@ -4,6 +4,11 @@ import type { CommodityPrice } from '@/lib/types';
 export const runtime = 'edge';
 export const revalidate = 0;
 
+// Module-level cache — survives across requests in the same Edge instance
+let cachedPrices: CommodityPrice[] | null = null;
+let cacheTime = 0;
+const CACHE_TTL = 28_000; // 28 seconds — slightly under the 30s client refresh
+
 const COMMODITIES = [
   { ticker: 'BZ=F',  symbol: 'BRT', name: 'Brent Crude',    unit: 'USD/bbl' },
   { ticker: 'CL=F',  symbol: 'WTI', name: 'WTI Crude',      unit: 'USD/bbl' },
@@ -17,6 +22,7 @@ async function fetchYahooQuote(ticker: string) {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=90d`;
   const r = await fetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0' },
+    signal: AbortSignal.timeout(5000), // 5s timeout per ticker
     next: { revalidate: 30 },
   });
   if (!r.ok) throw new Error(`Yahoo Finance fetch failed for ${ticker}`);
@@ -24,6 +30,11 @@ async function fetchYahooQuote(ticker: string) {
 }
 
 export async function GET() {
+  // Serve from cache if fresh
+  if (cachedPrices && Date.now() - cacheTime < CACHE_TTL) {
+    return NextResponse.json({ prices: cachedPrices, updatedAt: new Date(cacheTime).toISOString(), cached: true });
+  }
+
   const results: CommodityPrice[] = [];
 
   await Promise.allSettled(
@@ -83,6 +94,12 @@ export async function GET() {
   // Sort in preferred display order
   const order = ['BRT', 'WTI', 'DUB', 'NG', 'HO', 'RB'];
   results.sort((a, b) => order.indexOf(a.symbol) - order.indexOf(b.symbol));
+
+  // Store in module-level cache
+  if (results.length > 0) {
+    cachedPrices = results;
+    cacheTime = Date.now();
+  }
 
   return NextResponse.json({ prices: results, updatedAt: new Date().toISOString() });
 }

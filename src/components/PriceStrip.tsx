@@ -2,11 +2,45 @@
 import { useEffect, useState, useRef } from 'react';
 import type { CommodityPrice } from '@/lib/types';
 import ThemeToggle from '@/components/ThemeToggle';
+import MetricTooltip from '@/components/MetricTooltip';
 
 interface Props { initialPrices: CommodityPrice[] }
 
 const HL_SPREAD: Record<string, number> = {
   BRT: 0.018, WTI: 0.019, HH: 0.025, TTF: 0.022, GO: 0.016, HFO: 0.014,
+};
+
+const COMMODITY_INFO: Record<string, { title: string; description: string; unit: string }> = {
+  BRT: {
+    title: 'Brent Crude Oil',
+    description: 'The global benchmark for crude oil, priced at ICE Futures Europe. Sourced from the North Sea. ~70% of world crude trades at a differential to Brent.',
+    unit: 'USD per barrel (bbl)',
+  },
+  WTI: {
+    title: 'WTI Crude Oil',
+    description: 'West Texas Intermediate — the US benchmark crude, priced at NYMEX. Lighter and sweeter than Brent. Delivered at Cushing, Oklahoma storage hub.',
+    unit: 'USD per barrel (bbl)',
+  },
+  HH: {
+    title: 'Henry Hub Natural Gas',
+    description: 'US natural gas benchmark price at the Henry Hub pipeline interchange in Louisiana. Key reference for LNG export pricing and US power generation costs.',
+    unit: 'USD per MMBtu (million British thermal units)',
+  },
+  TTF: {
+    title: 'TTF Natural Gas (Europe)',
+    description: 'Title Transfer Facility — the European gas benchmark traded on ICE Endex. Highly sensitive to Russian supply flows, LNG imports, and European storage levels.',
+    unit: 'USD per MMBtu (converted from EUR/MWh)',
+  },
+  GO: {
+    title: 'Gasoil / Diesel (ICE)',
+    description: 'ICE Low Sulphur Gasoil futures — the European benchmark for diesel and heating oil. Critical for transport, agriculture, and industrial demand signals.',
+    unit: 'USD per metric tonne',
+  },
+  HFO: {
+    title: 'High-Fuel Oil (Bunker)',
+    description: 'Heavy fuel oil used as marine bunker fuel. IMO 2020 sulphur regulations shifted demand toward VLSFO. Price tracks crude with a downside discount.',
+    unit: 'USD per metric tonne',
+  },
 };
 
 export default function PriceStrip({ initialPrices }: Props) {
@@ -72,6 +106,7 @@ export default function PriceStrip({ initialPrices }: Props) {
           const flashCls  = flashes[p.symbol] === 'up' ? 'flash-up' : flashes[p.symbol] === 'down' ? 'flash-down' : '';
           const trendColor = p.trend === 'up' ? 'value-up' : p.trend === 'down' ? 'value-down' : 'text-terminal-bright';
 
+          const info = COMMODITY_INFO[p.symbol];
           return (
             <div
               key={p.symbol}
@@ -88,16 +123,37 @@ export default function PriceStrip({ initialPrices }: Props) {
               </div>
               {/* Price */}
               <div className={`text-[15px] font-bold leading-none tabular-nums ${trendColor}`}>
-                ${p.price.toFixed(2)}
+                {info ? (
+                  <MetricTooltip
+                    title={info.title}
+                    description={info.description}
+                    unit={info.unit}
+                    context={`Current: $${p.price.toFixed(2)} · ${p.trend === 'up' ? 'Trending up' : p.trend === 'down' ? 'Trending down' : 'Flat'} today`}
+                  >
+                    ${p.price.toFixed(2)}
+                  </MetricTooltip>
+                ) : `$${p.price.toFixed(2)}`}
               </div>
               {/* Change % */}
               <div className={`text-[9px] font-semibold mt-0.5 ${p.changePct >= 0 ? 'value-up' : 'value-down'}`}>
-                {p.changePct >= 0 ? '+' : ''}{p.changePct.toFixed(2)}%
+                <MetricTooltip
+                  title="Daily % Change"
+                  description="Percentage change in price from the previous session's closing price. Positive = price rose; negative = price fell."
+                  context={`${p.changePct >= 0 ? '+' : ''}${p.changePct.toFixed(2)}% change = $${Math.abs(p.change ?? 0).toFixed(2)}/bbl move`}
+                >
+                  {p.changePct >= 0 ? '+' : ''}{p.changePct.toFixed(2)}%
+                </MetricTooltip>
               </div>
               {/* H/L range */}
               <div className="flex gap-1.5 text-[8px] mt-0.5 text-terminal-dim">
-                <span>H <span className="text-terminal-text">{hi}</span></span>
-                <span>L <span className="text-terminal-text">{lo}</span></span>
+                <MetricTooltip
+                  title="Estimated Intraday Range"
+                  description="Estimated high and low price range for today's session, based on recent volatility spread. Actual exchange H/L may differ."
+                  unit="USD/bbl"
+                >
+                  <span>H <span className="text-terminal-text">{hi}</span></span>
+                  <span className="ml-1.5">L <span className="text-terminal-text">{lo}</span></span>
+                </MetricTooltip>
               </div>
             </div>
           );
@@ -107,7 +163,20 @@ export default function PriceStrip({ initialPrices }: Props) {
         <div className="flex flex-col justify-center px-3 border-r border-terminal-border h-full min-w-[96px]">
           <div className="font-['Orbitron'] text-[8px] tracking-wider text-terminal-dim mb-0.5">BRT–WTI</div>
           <div className="text-terminal-amber text-[15px] font-bold leading-none tabular-nums">
-            ${brtWtiSpread.toFixed(2)}
+            <MetricTooltip
+              title="Brent–WTI Spread"
+              description="The price difference between Brent Crude (global benchmark) and WTI (US benchmark). A wider spread usually reflects transportation costs, US shale supply gluts at Cushing, or geopolitical risk premiums on Brent."
+              unit="USD per barrel"
+              context={
+                spreadLabel === 'CONTANGO'
+                  ? 'Wide spread (>$3): Brent carries elevated geopolitical premium'
+                  : spreadLabel === 'NORMAL'
+                  ? 'Normal spread ($1–$3): Typical historical range'
+                  : 'Compressed (<$1): US–global supply convergence; watch for reversal'
+              }
+            >
+              ${brtWtiSpread.toFixed(2)}
+            </MetricTooltip>
           </div>
           <div className="text-terminal-dim text-[8px] mt-0.5">SPREAD</div>
           <div className="text-terminal-amber text-[8px] font-semibold">{spreadLabel}</div>

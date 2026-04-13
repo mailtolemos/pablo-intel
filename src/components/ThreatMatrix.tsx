@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import type { Chokepoint, ThreatEvent } from '@/lib/types';
+import MetricTooltip from '@/components/MetricTooltip';
 
 const STATUS_CONFIG = {
   open:      { text: 'text-terminal-green', dot: 'bg-terminal-green', label: 'OPEN'      },
@@ -158,15 +159,33 @@ export default function ThreatMatrix() {
             <div className="px-2.5 pb-2">
               <SectionLabel>Market Metrics</SectionLabel>
               <div className="grid grid-cols-2 gap-1.5">
-                <MetricTile label="BRT-WTI Spread"   value={`$${metrics.brtWtiSpread}`}   sub="$/bbl" />
-                <MetricTile label="OPEC Spare Cap"   value={`${metrics.opecSpareCapacity}`} sub="Mb/d" />
+                <MetricTile label="BRT-WTI Spread"   value={`$${metrics.brtWtiSpread}`}   sub="$/bbl"
+                  tipTitle="Brent–WTI Spread"
+                  tipDesc="Price difference between Brent (global benchmark) and WTI (US benchmark). Reflects transport costs, US inventory levels at Cushing, and geopolitical risk premiums."
+                  tipContext={metrics.brtWtiSpread > 3 ? 'Wide: elevated Brent risk premium' : metrics.brtWtiSpread > 1 ? 'Normal range' : 'Compressed: US–global price convergence'} />
+                <MetricTile label="OPEC Spare Cap"   value={`${metrics.opecSpareCapacity}`} sub="Mb/d"
+                  tipTitle="OPEC+ Spare Capacity"
+                  tipDesc="Unused production capacity that OPEC+ members can bring online within 30–90 days. Higher spare capacity = stronger price buffer. Saudi Arabia holds ~2 Mb/d of global spare."
+                  tipContext="Current ~3.2 Mb/d: moderate price buffer against supply shocks" />
                 <MetricTile label="Sentiment Index"  value={`${metrics.sentimentIndex}`}
                   sub={metrics.sentimentIndex > 50 ? '▲ BULLISH' : '▼ BEARISH'}
-                  color={metrics.sentimentIndex > 50 ? 'text-terminal-green' : 'text-terminal-red'} />
+                  color={metrics.sentimentIndex > 50 ? 'text-terminal-green' : 'text-terminal-red'}
+                  tipTitle="Market Sentiment Index"
+                  tipDesc="Composite 0–100 index derived from news direction ratio, analyst positioning, and price momentum signals. Above 50 = net bullish; below 50 = net bearish."
+                  tipContext={metrics.sentimentIndex > 50 ? 'Above 50: more bullish than bearish signals' : 'Below 50: bearish signals dominate'} />
                 <MetricTile label="Inventory Trend"  value={metrics.inventoryTrend.toUpperCase()} sub="EIA weekly"
-                  color={metrics.inventoryTrend === 'draw' ? 'text-terminal-green' : 'text-terminal-red'} />
-                <MetricTile label="Volatility (OVX)" value={metrics.volatilityIndex.toFixed(1)} sub="index" />
-                <MetricTile label="Crack Spread"     value={`$${metrics.crackSpread.toFixed(1)}`} sub="3-2-1 $/bbl" />
+                  color={metrics.inventoryTrend === 'draw' ? 'text-terminal-green' : 'text-terminal-red'}
+                  tipTitle="EIA Inventory Trend"
+                  tipDesc="Direction of US crude oil and petroleum inventory changes from the weekly EIA Petroleum Status Report. 'DRAW' = stocks falling (bullish); 'BUILD' = stocks rising (bearish)."
+                  tipContext={metrics.inventoryTrend === 'draw' ? 'DRAW: demand exceeding supply — supports prices' : 'BUILD: supply exceeding demand — pressures prices'} />
+                <MetricTile label="Volatility (OVX)" value={metrics.volatilityIndex.toFixed(1)} sub="index"
+                  tipTitle="OVX — Crude Oil Volatility Index"
+                  tipDesc="CBOE Crude Oil Volatility Index (OVX), known as the 'Oil VIX'. Measures expected 30-day volatility implied by Brent options. Above 35 = elevated fear; above 60 = crisis level."
+                  tipContext={metrics.volatilityIndex > 35 ? 'Elevated: options market pricing high uncertainty' : 'Normal: below 35, market relatively calm'} />
+                <MetricTile label="Crack Spread"     value={`$${metrics.crackSpread.toFixed(1)}`} sub="3-2-1 $/bbl"
+                  tipTitle="3-2-1 Crack Spread"
+                  tipDesc="Proxy for refinery profit margin: converting 3 barrels of crude into 2 barrels of gasoline and 1 barrel of distillate. Higher = better refining economics; lower = margin squeeze."
+                  tipContext={metrics.crackSpread > 20 ? 'Strong: refiners incentivised to maximise runs' : metrics.crackSpread > 12 ? 'Healthy: normal refinery economics' : 'Weak: refinery margins under pressure'} />
               </div>
             </div>
           )}
@@ -176,12 +195,24 @@ export default function ThreatMatrix() {
             <div className="px-2.5 pb-4">
               <SectionLabel>Fleet Status</SectionLabel>
               <div className="panel px-3 py-3 grid grid-cols-2 gap-3">
-                <FleetStat value={data.stats.totalShips} label="TANKERS TRACKED"  color="text-terminal-blue glow-blue" />
-                <FleetStat value={data.stats.vlccs}      label="VLCCs ACTIVE"     color="text-terminal-amber" />
+                <FleetStat value={data.stats.totalShips} label="TANKERS TRACKED"  color="text-terminal-blue glow-blue"
+                  tipTitle="Tankers Tracked"
+                  tipDesc="Total number of oil tankers (VLCC, Suezmax, Aframax, LR2) currently being monitored via AIS transponder signals on key shipping lanes."
+                  tipContext="Includes vessels on Middle East, West Africa, and Atlantic routes" />
+                <FleetStat value={data.stats.vlccs}      label="VLCCs ACTIVE"     color="text-terminal-amber"
+                  tipTitle="VLCCs Active"
+                  tipDesc="Very Large Crude Carriers — the largest oil tankers, each carrying 2 million barrels (320,000 DWT). Primarily route crude from the Persian Gulf to Asia and Europe."
+                  tipContext="Each VLCC = ~2 million barrels of crude capacity" />
                 <FleetStat value={disruptedCount}        label="DISRUPTED ROUTES"
-                  color={disruptedCount > 0 ? 'text-terminal-red' : 'text-terminal-green'} />
+                  color={disruptedCount > 0 ? 'text-terminal-red' : 'text-terminal-green'}
+                  tipTitle="Disrupted Chokepoints"
+                  tipDesc="Number of critical oil shipping chokepoints currently in 'disrupted' or 'critical' status. Disruptions force rerouting, extending voyage times and raising freight rates."
+                  tipContext={disruptedCount > 0 ? `${disruptedCount} active disruption(s) — tankers may be rerouting` : 'All monitored routes currently open'} />
                 <FleetStat value={avgSeverity.toFixed(1)} label="AVG RISK SCORE"
-                  color={avgSeverity >= 7 ? 'text-terminal-red' : avgSeverity >= 4 ? 'text-terminal-amber' : 'text-terminal-green'} />
+                  color={avgSeverity >= 7 ? 'text-terminal-red' : avgSeverity >= 4 ? 'text-terminal-amber' : 'text-terminal-green'}
+                  tipTitle="Average Threat Severity"
+                  tipDesc="Mean severity score of all active geopolitical threat events on a 0–10 scale. Scores: Low=2, Medium=5, High=8, Critical=10. Reflects composite risk to oil supply."
+                  tipContext={avgSeverity >= 7 ? 'High risk: multiple severe threats active' : avgSeverity >= 4 ? 'Elevated: moderate threat environment' : 'Low: no major active disruptions'} />
               </div>
             </div>
           )}
@@ -201,22 +232,38 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function MetricTile({ label, value, sub, color = 'text-terminal-bright' }: {
+function MetricTile({ label, value, sub, color = 'text-terminal-bright', tipTitle, tipDesc, tipContext }: {
   label: string; value: string; sub?: string; color?: string;
+  tipTitle?: string; tipDesc?: string; tipContext?: string;
 }) {
   return (
     <div className="panel px-2.5 py-2">
       <div className="text-[8px] text-terminal-dim uppercase tracking-wider mb-1 font-['Orbitron']">{label}</div>
-      <div className={`text-[15px] font-bold leading-none tabular-nums ${color}`}>{value}</div>
+      <div className={`text-[15px] font-bold leading-none tabular-nums ${color}`}>
+        {tipTitle && tipDesc ? (
+          <MetricTooltip title={tipTitle} description={tipDesc} context={tipContext}>
+            {value}
+          </MetricTooltip>
+        ) : value}
+      </div>
       {sub && <div className="text-[8px] text-terminal-dim mt-1">{sub}</div>}
     </div>
   );
 }
 
-function FleetStat({ value, label, color }: { value: number | string; label: string; color: string }) {
+function FleetStat({ value, label, color, tipTitle, tipDesc, tipContext }: {
+  value: number | string; label: string; color: string;
+  tipTitle?: string; tipDesc?: string; tipContext?: string;
+}) {
   return (
     <div className="text-center">
-      <div className={`text-[22px] font-bold leading-none tabular-nums ${color}`}>{value}</div>
+      <div className={`text-[22px] font-bold leading-none tabular-nums ${color}`}>
+        {tipTitle && tipDesc ? (
+          <MetricTooltip title={tipTitle} description={tipDesc} context={tipContext}>
+            {value}
+          </MetricTooltip>
+        ) : value}
+      </div>
       <div className="text-[8px] text-terminal-dim mt-1.5 tracking-wide font-['Orbitron']">{label}</div>
     </div>
   );
