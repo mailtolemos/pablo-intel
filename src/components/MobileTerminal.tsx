@@ -5,16 +5,16 @@ import WorldMap from '@/components/WorldMap';
 import NewsFeed from '@/components/NewsFeed';
 import PriceChart from '@/components/PriceChart';
 import ThreatMatrix from '@/components/ThreatMatrix';
-import RecapPanel from '@/components/RecapPanel';
+import BotPanel from '@/components/BotPanel';
 
-type Tab = 'map' | 'news' | 'threats' | 'chart' | 'recap';
+type Tab = 'map' | 'news' | 'threats' | 'chart' | 'bot';
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'map',     label: 'MAP',     icon: '🌍' },
   { id: 'news',    label: 'NEWS',    icon: '📰' },
   { id: 'threats', label: 'THREATS', icon: '⚠️' },
   { id: 'chart',   label: 'CHART',   icon: '📈' },
-  { id: 'recap',   label: 'BRIEF',   icon: '🤖' },
+  { id: 'bot',     label: 'SIGNALS', icon: '⚡' },
 ];
 
 const TICKER_ITEMS = [
@@ -91,7 +91,7 @@ export default function MobileTerminal({ initialPrices }: Props) {
         <div className={`h-full ${tab === 'news'    ? 'block' : 'hidden'}`}><NewsFeed /></div>
         <div className={`h-full ${tab === 'threats' ? 'block' : 'hidden'}`}><ThreatMatrix /></div>
         <div className={`h-full ${tab === 'chart'   ? 'block' : 'hidden'}`}><PriceChart /></div>
-        <div className={`h-full ${tab === 'recap'   ? 'block' : 'hidden'}`}><RecapPanel /></div>
+        <div className={`h-full ${tab === 'bot'     ? 'block' : 'hidden'}`}><BotPanel /></div>
       </div>
 
       {/* ── Bottom ticker ────────────────────────────────────── */}

@@ -300,6 +300,78 @@ function parseDate(str: string): Date {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// OIL RELEVANCE FILTER
+// Blocks non-oil stories from general feeds (sports, entertainment, etc.)
+// Ghana footballer, celebrity news, etc. should NEVER appear here.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Strong signal: any single term confirms oil/energy relevance
+const OIL_STRONG_TERMS = [
+  'crude', 'brent', 'wti', 'petroleum', 'opec', 'aramco', 'lng', 'tanker',
+  'refinery', 'refining', 'barrel', 'mb/d', 'mbpd', 'pdvsa', 'pemex', 'rosneft',
+  'novatek', 'lukoil', 'nnpc', 'adnoc', 'noc libya', 'cpc pipeline',
+  'gasoline', 'diesel fuel', 'fuel oil', 'heating oil', 'gasoil',
+  'shale', 'permian', 'bakken', 'eagle ford', 'fracking', 'hydraulic fracturing',
+  'wellhead', 'upstream', 'downstream', 'midstream', 'exploration drilling',
+  'oil field', 'oil well', 'oil price', 'oil production', 'oil output',
+  'oil export', 'oil import', 'oil supply', 'oil demand', 'oil reserve',
+  'oil market', 'oil sector', 'oil industry', 'oil company', 'oil minister',
+  'oil sanction', 'oil embargo', 'energy sanction',
+  'exxon', 'chevron', 'totalenergies', 'bp plc', 'shell oil', 'conocophillips',
+  'natural gas price', 'gas pipeline', 'gas export', 'gas import', 'gas supply',
+  'hormuz', 'bab el-mandeb', 'suez canal oil', 'oil tanker',
+  'eia weekly', 'eia inventory', 'api inventory', 'baker hughes',
+  'iea oil', 'opec report', 'energy outlook', 'steo',
+  'price cap oil', 'shadow fleet',
+];
+
+// Weak signal: need 2+ or combined with a general energy word to confirm
+const OIL_WEAK_TERMS = [
+  'oil', 'fuel', 'energy crisis', 'energy security', 'energy market',
+  'pipeline', 'gas station', 'pump price', 'petrol price', 'fuel price',
+  'sanctions russia', 'iran nuclear', 'houthi', 'red sea attack',
+  'saudi arabia oil', 'russia oil', 'iraq oil', 'libya oil',
+  'venezuela oil', 'nigeria oil', 'angola oil',
+];
+
+// Topics that come from oil-specific feeds — always pass, no check needed
+const ALWAYS_PASS_TOPICS = new Set([
+  'iran_conflict', 'chokepoints', 'opec', 'inventory', 'shortage',
+  'sanctions', 'us_supply', 'report', 'positioning', 'gas', 'shipping',
+]);
+
+function isOilRelevant(title: string, summary: string, topic: string): boolean {
+  // Feeds with oil-specific topics are pre-filtered at source — always pass
+  if (ALWAYS_PASS_TOPICS.has(topic)) return true;
+
+  const text = (title + ' ' + summary).toLowerCase();
+  const titleLower = title.toLowerCase();
+
+  // Any single strong oil term in title → pass immediately
+  if (OIL_STRONG_TERMS.some(t => titleLower.includes(t))) return true;
+
+  // Any strong term in full text → pass
+  if (OIL_STRONG_TERMS.some(t => text.includes(t))) return true;
+
+  // 2+ weak terms in title → pass
+  const weakTitleHits = OIL_WEAK_TERMS.filter(t => titleLower.includes(t)).length;
+  if (weakTitleHits >= 2) return true;
+
+  // 2+ weak terms in full text → pass
+  const weakTextHits = OIL_WEAK_TERMS.filter(t => text.includes(t)).length;
+  if (weakTextHits >= 2) return true;
+
+  // Single "oil" in title + anything geopolitical = pass
+  if (titleLower.includes('oil') && (
+    text.includes('war') || text.includes('sanction') || text.includes('strike') ||
+    text.includes('attack') || text.includes('iran') || text.includes('russia') ||
+    text.includes('opec') || text.includes('saudi') || text.includes('price')
+  )) return true;
+
+  return false;
+}
+
 async function fetchFeed(feedUrl: string, source: string, topic: string): Promise<NewsItem[]> {
   const r = await fetch(feedUrl, {
     headers: {
@@ -327,23 +399,30 @@ async function fetchFeed(feedUrl: string, source: string, topic: string): Promis
     [];
   const arr = Array.isArray(items) ? items : [items];
 
-  return arr.slice(0, 15).map((item: Record<string, unknown>, i: number) => {
-    const title   = String(item.title ?? '').replace(/^<!\[CDATA\[|\]\]>$/g, '').trim();
-    const rawLink = item.link ?? item.guid ?? item.id ?? '';
+  const results: NewsItem[] = [];
+  for (const item of arr.slice(0, 15)) {
+    const title   = String((item as Record<string, unknown>).title ?? '').replace(/^<!\[CDATA\[|\]\]>$/g, '').trim();
+    if (!title || title.length < 10) continue;
+
+    const rawLink = (item as Record<string, unknown>).link ?? (item as Record<string, unknown>).guid ?? (item as Record<string, unknown>).id ?? '';
     const link    = typeof rawLink === 'string' ? rawLink
                   : (rawLink as Record<string, string>)?.['@_href'] ?? String(rawLink);
-    const rawSum  = String(item.description ?? item.summary ?? item['content:encoded'] ?? item.content ?? '');
+    const rawSum  = String((item as Record<string, unknown>).description ?? (item as Record<string, unknown>).summary ?? (item as Record<string, unknown>)['content:encoded'] ?? (item as Record<string, unknown>).content ?? '');
     const summary = stripHtml(rawSum);
-    const pubDate = String(item.pubDate ?? item.published ?? item.updated ?? item['dc:date'] ?? '');
+    const pubDate = String((item as Record<string, unknown>).pubDate ?? (item as Record<string, unknown>).published ?? (item as Record<string, unknown>).updated ?? (item as Record<string, unknown>)['dc:date'] ?? '');
+
+    // ── Oil relevance gate — blocks sports, entertainment, unrelated news ──
+    if (!isOilRelevant(title, summary, topic)) continue;
 
     const { score, direction, drivers, category, isBreaking } = scoreArticle(title, summary, topic);
-    const id = `${source}-${i}-${title.slice(0, 24).replace(/\W/g, '')}`;
+    const id = `${source}-${results.length}-${title.slice(0, 24).replace(/\W/g, '')}`;
 
-    return {
+    results.push({
       id, title, source, url: link, publishedAt: pubDate,
       summary, impactScore: Math.round(score), direction, drivers, category, isBreaking,
-    } as NewsItem;
-  });
+    } as NewsItem);
+  }
+  return results;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

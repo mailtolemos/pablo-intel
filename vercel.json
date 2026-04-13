@@ -3,6 +3,10 @@
     {
       "path": "/api/recap?cron=true",
       "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/bot/tick?cron=true",
+      "schedule": "*/15 * * * *"
     }
   ]
 }
