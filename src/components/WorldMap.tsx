@@ -170,19 +170,19 @@ const SHORTAGE_COUNTRIES: Record<string, ShortageData> = {
 };
 
 const SHORTAGE_FILL: Record<ShortageSeverity, string> = {
-  critical: '#3d0c12',
-  high:     '#2e1404',
-  moderate: '#2a1d00',
+  critical: '#5c0a16',  // vivid deep red — visible on dark bg
+  high:     '#4a1a04',  // vivid deep orange
+  moderate: '#3a2800',  // vivid deep amber
 };
 const SHORTAGE_STROKE: Record<ShortageSeverity, string> = {
-  critical: '#cc1a2e',
-  high:     '#c85010',
-  moderate: '#b08000',
+  critical: '#ff2844',  // bright red stroke
+  high:     '#ff6020',  // bright orange stroke
+  moderate: '#e8a800',  // bright amber stroke
 };
 const SHORTAGE_HOVER: Record<ShortageSeverity, string> = {
-  critical: '#5a0f1a',
-  high:     '#4a1e08',
-  moderate: '#3d2c00',
+  critical: '#7a1020',
+  high:     '#6a2a08',
+  moderate: '#543c00',
 };
 
 const CP_COLORS: Record<string, string> = {
@@ -373,7 +373,7 @@ export default function WorldMap() {
                 } else if (shortage) {
                   fill = isHovered ? SHORTAGE_HOVER[shortage.severity] : SHORTAGE_FILL[shortage.severity];
                   stroke = SHORTAGE_STROKE[shortage.severity];
-                  strokeWidth = isHovered ? 0.8 : 0.5;
+                  strokeWidth = isHovered ? 1.2 : 0.8;  // thicker so small countries stay visible
                   hoverFill = SHORTAGE_HOVER[shortage.severity];
                 } else if (isOpec) {
                   fill = isHovered && hasData ? '#16384e' : '#0d2a14';

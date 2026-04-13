@@ -106,6 +106,62 @@ const RSS_FEEDS = [
     source: 'Mexico Pemex', tier: 2, topic: 'shortage' },
   { url: 'https://news.google.com/rss/search?q=Ecuador+oil+indigenous+protest+Amazon+production+block&hl=en-US&gl=US&ceid=US:en',
     source: 'Ecuador Oil', tier: 2, topic: 'shortage' },
+
+  // ── Asia fuel shortages (new) ─────────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=Pakistan+fuel+diesel+petrol+shortage+crisis+IMF+OGRA&hl=en-US&gl=US&ceid=US:en',
+    source: 'Pakistan Fuel', tier: 2, topic: 'shortage' },
+  { url: 'https://news.google.com/rss/search?q=Sri+Lanka+Bangladesh+Myanmar+Nepal+fuel+shortage+rationing&hl=en-US&gl=US&ceid=US:en',
+    source: 'Asia Fuel Crisis', tier: 2, topic: 'shortage' },
+  { url: 'https://news.google.com/rss/search?q=India+China+oil+demand+import+consumption+growth+barrel&hl=en-US&gl=US&ceid=US:en',
+    source: 'Asia Oil Demand', tier: 1, topic: 'demand' },
+
+  // ── LNG / natural gas (new) ───────────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=LNG+liquefied+natural+gas+export+terminal+price+cargo&hl=en-US&gl=US&ceid=US:en',
+    source: 'LNG News', tier: 2, topic: 'gas' },
+  { url: 'https://news.google.com/rss/search?q=TTF+Henry+Hub+natural+gas+price+European+Asian+LNG&hl=en-US&gl=US&ceid=US:en',
+    source: 'Gas Prices', tier: 2, topic: 'gas' },
+
+  // ── Shipping / tanker rates (new) ─────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=tanker+freight+rates+Baltic+dirty+VLCC+Aframax+worldscale&hl=en-US&gl=US&ceid=US:en',
+    source: 'Tanker Rates', tier: 2, topic: 'shipping' },
+
+  // ── CFTC positioning (new) ────────────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=CFTC+oil+positioning+speculative+net+long+short+COT+report&hl=en-US&gl=US&ceid=US:en',
+    source: 'CFTC Positioning', tier: 2, topic: 'positioning' },
+
+  // ── Official reports (new) ────────────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=IEA+oil+market+report+demand+forecast+monthly+2025&hl=en-US&gl=US&ceid=US:en',
+    source: 'IEA Report', tier: 1, topic: 'report' },
+  { url: 'https://news.google.com/rss/search?q=OPEC+monthly+oil+market+report+MOMR+forecast+production&hl=en-US&gl=US&ceid=US:en',
+    source: 'OPEC MOMR', tier: 1, topic: 'report' },
+  { url: 'https://news.google.com/rss/search?q=EIA+STEO+short-term+energy+outlook+forecast+crude+price&hl=en-US&gl=US&ceid=US:en',
+    source: 'EIA STEO', tier: 1, topic: 'report' },
+
+  // ── API inventories (new) ─────────────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=API+weekly+inventory+crude+oil+draw+build+petroleum&hl=en-US&gl=US&ceid=US:en',
+    source: 'API Inventory', tier: 1, topic: 'inventory' },
+
+  // ── Baker Hughes / US rigs (new) ──────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=Baker+Hughes+rig+count+weekly+drilling+active+US+oil&hl=en-US&gl=US&ceid=US:en',
+    source: 'Baker Hughes', tier: 2, topic: 'us_supply' },
+
+  // ── SPR / strategic reserve (new) ────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=US+strategic+petroleum+reserve+SPR+release+refill+emergency&hl=en-US&gl=US&ceid=US:en',
+    source: 'SPR News', tier: 2, topic: 'inventory' },
+
+  // ── Refining / crack spread (new) ────────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=refinery+crack+spread+diesel+gasoline+margin+outage+turnaround&hl=en-US&gl=US&ceid=US:en',
+    source: 'Refining', tier: 2, topic: 'supply' },
+
+  // ── Dedicated energy outlets (new) ───────────────────────────────────────
+  { url: 'https://www.worldoil.com/rss/news',
+    source: 'World Oil', tier: 1, topic: 'energy' },
+  { url: 'https://www.lngworldnews.com/feed/',
+    source: 'LNG World News', tier: 1, topic: 'gas' },
+  { url: 'https://www.arabianbusiness.com/rss/latest-news',
+    source: 'Arabian Business', tier: 1, topic: 'opec' },
+  { url: 'https://upstreamonline.com/rss',
+    source: 'Upstream Online', tier: 1, topic: 'supply' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -203,6 +259,10 @@ function scoreArticle(
     : topic === 'inventory' ? 10
     : topic === 'geopolitical' ? 12
     : topic === 'shortage' ? 14
+    : topic === 'report' ? 10
+    : topic === 'positioning' ? 8
+    : topic === 'shipping' ? 8
+    : topic === 'gas' ? 7
     : 0;
 
   const driverWeight = drivers.length;
