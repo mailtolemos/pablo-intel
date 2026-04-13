@@ -330,7 +330,7 @@ function getUpcomingEvents(withinHours = 168): Array<MarketEvent & { fireTime: s
 }
 
 // ── Main tick logic ────────────────────────────────────────────────────────────
-async function runTick(sendAlerts: boolean): Promise<{ newFlash: number; newAnalysis: number; scanned: number; errors: string[] }> {
+async function runTickInternal(sendAlerts: boolean): Promise<{ newFlash: number; newAnalysis: number; scanned: number; errors: string[] }> {
   let newFlash = 0, newAnalysis = 0, scanned = 0;
   const errors: string[] = [];
 
@@ -412,7 +412,7 @@ export async function GET(req: Request) {
     state.lastNewsAt = new Date().toISOString();
 
     try {
-      const result = await runTick(sendAlerts);
+      const result = await runTickInternal(sendAlerts);
       return NextResponse.json({
         ok: true,
         tickAt: state.lastTickAt,
@@ -430,6 +430,14 @@ export async function GET(req: Request) {
 
   // Status-only request
   return NextResponse.json({ ok: true, state: serializeState() });
+}
+
+/** Exported for use by the status route (auto-tick when stale) */
+export async function runTick(): Promise<void> {
+  state.lastTickAt = new Date().toISOString();
+  state.tickCount++;
+  state.lastNewsAt = new Date().toISOString();
+  await runTickInternal(true);
 }
 
 export function serializeState() {
