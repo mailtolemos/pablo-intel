@@ -41,3 +41,7 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+gh_*
+*.tar.gz
+bot/__pycache__/
