@@ -6,14 +6,16 @@ import WorldMap from '@/components/WorldMap';
 import NewsFeed from '@/components/NewsFeed';
 import ThreatMatrix from '@/components/ThreatMatrix';
 import AlJazeeraPanel from '@/components/AlJazeeraPanel';
+import AnalysisPanel from '@/components/AnalysisPanel';
 
-type Tab = 'map' | 'news' | 'threats' | 'live';
+type Tab = 'signals' | 'map' | 'news' | 'threats' | 'live';
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
+  { id: 'signals', label: 'AI',      icon: '🤖' },
   { id: 'map',     label: 'MAP',     icon: '🌍' },
   { id: 'news',    label: 'NEWS',    icon: '📰' },
-  { id: 'live',    label: 'AJ LIVE', icon: '📺' },
   { id: 'threats', label: 'THREATS', icon: '⚠️' },
+  { id: 'live',    label: 'AJ LIVE', icon: '📺' },
 ];
 
 const TICKER_ITEMS = [
@@ -28,7 +30,7 @@ const TICKER_ITEMS = [
 interface Props { initialPrices: CommodityPrice[] }
 
 export default function MobileTerminal({ initialPrices }: Props) {
-  const [tab, setTab]       = useState<Tab>('map');
+  const [tab, setTab]       = useState<Tab>('signals');
   const [prices, setPrices] = useState<CommodityPrice[]>(initialPrices);
   const [time, setTime]     = useState('');
 
@@ -118,6 +120,7 @@ export default function MobileTerminal({ initialPrices }: Props) {
 
       {/* ── Main content ───────────────────────────────── */}
       <div className="flex-1 overflow-hidden" style={{ position: 'relative', isolation: 'isolate', zIndex: 1 }}>
+        <div className={`h-full w-full overflow-y-auto ${tab === 'signals' ? 'block' : 'hidden'}`}><AnalysisPanel type="oil" accentColor="var(--blue)" /></div>
         <div className={`h-full w-full ${tab === 'map'     ? 'block' : 'hidden'}`}><WorldMap /></div>
         <div className={`h-full w-full ${tab === 'news'    ? 'block' : 'hidden'}`}><NewsFeed /></div>
         <div className={`h-full w-full overflow-y-auto ${tab === 'live'    ? 'block' : 'hidden'}`}><AlJazeeraPanel /></div>
@@ -135,7 +138,7 @@ export default function MobileTerminal({ initialPrices }: Props) {
       </div>
 
       {/* ── Tab bar ─────────────────────────────────────── */}
-      <div className="shrink-0 grid grid-cols-4 border-t border-terminal-border bg-terminal-panel"
+      <div className="shrink-0 grid grid-cols-5 border-t border-terminal-border bg-terminal-panel"
            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)', position: 'relative', zIndex: 40 }}>
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}

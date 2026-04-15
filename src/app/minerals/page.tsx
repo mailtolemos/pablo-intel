@@ -5,6 +5,7 @@ import MineralMap from '@/components/minerals/MineralMap';
 import MetalsMarket from '@/components/minerals/MetalsMarket';
 import SupplyRisk from '@/components/minerals/SupplyRisk';
 import MineralsMobile from '@/components/minerals/MineralsMobile';
+import AnalysisPanel from '@/components/AnalysisPanel';
 
 export const revalidate = 30;
 
@@ -74,9 +75,12 @@ export default async function MineralsPage() {
           </div>
         </div>
 
-        {/* Right: Supply risk + Sector ETFs */}
+        {/* Right: AI Signals (top) + Supply Risk / ETFs (bottom) */}
         <div className="flex flex-col overflow-hidden">
-          <div className="flex-1 min-h-0 panel overflow-hidden">
+          <div className="flex-[50] min-h-0 panel border-b border-terminal-border overflow-hidden">
+            <AnalysisPanel type="minerals" accentColor="var(--amber)" />
+          </div>
+          <div className="flex-[50] min-h-0 panel overflow-hidden">
             <SupplyRisk />
           </div>
         </div>

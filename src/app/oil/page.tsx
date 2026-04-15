@@ -6,6 +6,7 @@ import MarketDashboard from '@/components/MarketDashboard';
 import ThreatMatrix from '@/components/ThreatMatrix';
 import AlJazeeraPanel from '@/components/AlJazeeraPanel';
 import MobileTerminal from '@/components/MobileTerminal';
+import AnalysisPanel from '@/components/AnalysisPanel';
 
 export const revalidate = 30;
 
@@ -56,7 +57,7 @@ export default async function OilTerminalPage() {
         </div>
 
         {/* Main 3-column grid */}
-        <div className="flex-1 min-h-0 grid grid-cols-[300px_1fr_340px] overflow-hidden">
+        <div className="flex-1 min-h-0 grid grid-cols-[300px_1fr_360px] overflow-hidden">
 
           {/* Left: News */}
           <div className="panel border-r border-terminal-border overflow-hidden flex flex-col">
@@ -73,12 +74,15 @@ export default async function OilTerminalPage() {
             </div>
           </div>
 
-          {/* Right: AJ Live (top) + Threat Matrix (bottom) */}
+          {/* Right: AI Signals (top) · AJ Live (mid) · Threat Matrix (bottom) */}
           <div className="flex flex-col overflow-hidden">
-            <div className="flex-[44] min-h-0 panel border-b border-terminal-border overflow-hidden">
+            <div className="flex-[45] min-h-0 panel border-b border-terminal-border overflow-hidden">
+              <AnalysisPanel type="oil" accentColor="var(--blue)" />
+            </div>
+            <div className="flex-[23] min-h-0 panel border-b border-terminal-border overflow-hidden">
               <AlJazeeraPanel />
             </div>
-            <div className="flex-[56] min-h-0 panel overflow-hidden">
+            <div className="flex-[32] min-h-0 panel overflow-hidden">
               <ThreatMatrix />
             </div>
           </div>

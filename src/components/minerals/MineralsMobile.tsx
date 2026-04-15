@@ -5,14 +5,16 @@ import type { MetalPrice } from '@/app/api/metals/route';
 import MineralMap from '@/components/minerals/MineralMap';
 import MineralsNewsFeed from '@/components/minerals/MineralsNewsFeed';
 import SupplyRisk from '@/components/minerals/SupplyRisk';
+import AnalysisPanel from '@/components/AnalysisPanel';
 
-type Tab = 'prices' | 'map' | 'news' | 'risk';
+type Tab = 'signals' | 'prices' | 'map' | 'news' | 'risk';
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'prices', label: 'PRICES', icon: '💰' },
-  { id: 'map',    label: 'MAP',    icon: '🗺️' },
-  { id: 'news',   label: 'NEWS',   icon: '📰' },
-  { id: 'risk',   label: 'RISK',   icon: '⚠️' },
+  { id: 'signals', label: 'AI',     icon: '🤖' },
+  { id: 'prices',  label: 'PRICES', icon: '💰' },
+  { id: 'map',     label: 'MAP',    icon: '🗺️' },
+  { id: 'news',    label: 'NEWS',   icon: '📰' },
+  { id: 'risk',    label: 'RISK',   icon: '⚠️' },
 ];
 
 const TICKER_ITEMS = [
@@ -54,7 +56,7 @@ function PriceTile({ metal, decimals = 2 }: { metal: MetalPrice; decimals?: numb
 }
 
 export default function MineralsMobile({ initialMetals }: Props) {
-  const [tab, setTab]       = useState<Tab>('prices');
+  const [tab, setTab]       = useState<Tab>('signals');
   const [metals, setMetals] = useState<MetalPrice[]>(initialMetals);
   const [time, setTime]     = useState('');
 
@@ -165,6 +167,11 @@ export default function MineralsMobile({ initialMetals }: Props) {
       {/* ── Main content ───────────────────────────────── */}
       <div className="flex-1 overflow-hidden" style={{ position: 'relative', isolation: 'isolate', zIndex: 1 }}>
 
+        {/* AI SIGNALS tab */}
+        <div className={`h-full w-full overflow-y-auto ${tab === 'signals' ? 'block' : 'hidden'}`}>
+          <AnalysisPanel type="minerals" accentColor="var(--amber)" />
+        </div>
+
         {/* PRICES tab */}
         <div className={`h-full w-full overflow-y-auto ${tab === 'prices' ? 'block' : 'hidden'}`}>
           <div className="p-4 space-y-4">
@@ -250,7 +257,7 @@ export default function MineralsMobile({ initialMetals }: Props) {
       </div>
 
       {/* ── Tab bar ─────────────────────────────────────── */}
-      <div className="shrink-0 grid grid-cols-4 border-t border-terminal-border bg-terminal-panel"
+      <div className="shrink-0 grid grid-cols-5 border-t border-terminal-border bg-terminal-panel"
            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)', position: 'relative', zIndex: 40 }}>
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
