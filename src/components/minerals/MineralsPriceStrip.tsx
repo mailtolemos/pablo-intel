@@ -32,19 +32,19 @@ function MetalCell({
                   : flash === 'down' ? 'rgba(255,51,85,0.08)'
                   : 'transparent',
       }}>
-      <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-0.5">{label}</div>
+      <div className="text-[9px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-0.5">{label}</div>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-[14px] font-bold text-terminal-bright tabular-nums leading-none">
+        <span className="text-[17px] font-bold text-terminal-bright tabular-nums leading-none">
           {price > 0 ? price.toFixed(decimals) : '—'}
         </span>
         {price > 0 && (
-          <span className="text-[9px] font-semibold tabular-nums" style={{ color }}>
+          <span className="text-[10px] font-semibold tabular-nums" style={{ color }}>
             {arrow}{Math.abs(changePct).toFixed(2)}%
           </span>
         )}
       </div>
       {price > 0 && change !== 0 && (
-        <div className="text-[8px] tabular-nums" style={{ color }}>
+        <div className="text-[9px] tabular-nums" style={{ color }}>
           {up ? '+' : ''}{change.toFixed(decimals)}
         </div>
       )}
@@ -107,7 +107,7 @@ export default function MineralsPriceStrip({ initialMetals }: Props) {
       {/* Logo */}
       <div className="flex items-center gap-2 px-3 border-r border-terminal-border shrink-0">
         <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--amber)' }} />
-        <span className="text-[11px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
+        <span className="text-[12px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
           MINERALS<span style={{ color: 'var(--amber)' }}>WATCHTOWER</span>
         </span>
       </div>
@@ -131,11 +131,11 @@ export default function MineralsPriceStrip({ initialMetals }: Props) {
       {/* Gold/Silver ratio */}
       {gsRatio !== null && (
         <div className="flex flex-col justify-center px-3 border-r border-terminal-border shrink-0">
-          <div className="text-[7px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">G/S RATIO</div>
-          <div className="text-[14px] font-bold tabular-nums" style={{ color: 'var(--amber)' }}>
+          <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">G/S RATIO</div>
+          <div className="text-[15px] font-bold tabular-nums" style={{ color: 'var(--amber)' }}>
             {gsRatio}x
           </div>
-          <div className="text-[7px] text-terminal-dim">
+          <div className="text-[8px] text-terminal-dim">
             {gsRatio > 90 ? 'SILVER CHEAP' : gsRatio > 75 ? 'NORMAL' : 'SILVER RICH'}
           </div>
         </div>
@@ -156,12 +156,12 @@ export default function MineralsPriceStrip({ initialMetals }: Props) {
       {/* Pt/Pd spread */}
       {ptPdSpread !== null && (
         <div className="flex flex-col justify-center px-3 border-r border-terminal-border shrink-0">
-          <div className="text-[7px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">PT–PD</div>
-          <div className="text-[14px] font-bold tabular-nums"
+          <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">PT–PD</div>
+          <div className="text-[15px] font-bold tabular-nums"
             style={{ color: ptPdSpread > 0 ? 'var(--green)' : 'var(--red)' }}>
             {ptPdSpread > 0 ? '+' : ''}{ptPdSpread}
           </div>
-          <div className="text-[7px] text-terminal-dim">
+          <div className="text-[8px] text-terminal-dim">
             {ptPdSpread > 200 ? 'PT PREMIUM' : ptPdSpread > 0 ? 'NEAR PARITY' : 'PD PREMIUM'}
           </div>
         </div>
@@ -174,9 +174,9 @@ export default function MineralsPriceStrip({ initialMetals }: Props) {
       <div className="flex items-center gap-2 px-3 border-l border-terminal-border shrink-0">
         <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: session.color }} />
         <div className="flex flex-col">
-          <span className="text-[8px] font-['Orbitron'] font-bold tracking-wider"
+          <span className="text-[9px] font-['Orbitron'] font-bold tracking-wider"
             style={{ color: session.color }}>{session.label}</span>
-          <span className="text-[8px] text-terminal-dim tabular-nums">{time}</span>
+          <span className="text-[9px] text-terminal-dim tabular-nums">{time}</span>
         </div>
       </div>
 
@@ -185,12 +185,16 @@ export default function MineralsPriceStrip({ initialMetals }: Props) {
         <ThemeToggle />
       </div>
 
-      {/* Home link */}
-      <div className="flex items-center px-3 border-l border-terminal-border shrink-0">
-        <Link href="/" className="text-[8px] font-['Orbitron'] text-terminal-dim hover:text-terminal-amber transition-colors tracking-widest">
-          ← HOME
-        </Link>
-      </div>
+      {/* Home button */}
+      <Link href="/"
+        className="flex items-center gap-1.5 px-3 border-l border-terminal-border shrink-0 h-full transition-colors duration-200"
+        style={{ background: 'transparent' }}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,179,0,0.08)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+      >
+        <span className="text-[11px]">⌂</span>
+        <span className="text-[8px] font-['Orbitron'] font-bold tracking-wider" style={{ color: 'var(--amber)' }}>HOME</span>
+      </Link>
 
       {/* Live indicator */}
       <div className="flex items-center gap-1.5 px-3 border-l border-terminal-border shrink-0">

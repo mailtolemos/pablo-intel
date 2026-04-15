@@ -4,6 +4,7 @@ import MineralsNewsFeed from '@/components/minerals/MineralsNewsFeed';
 import MineralMap from '@/components/minerals/MineralMap';
 import MetalsMarket from '@/components/minerals/MetalsMarket';
 import SupplyRisk from '@/components/minerals/SupplyRisk';
+import MineralsMobile from '@/components/minerals/MineralsMobile';
 
 export const revalidate = 30;
 
@@ -41,6 +42,13 @@ export default async function MineralsPage() {
   const initialMetals = await getInitialMetals();
 
   return (
+    <>
+      {/* ── Mobile (< md) ───────────────────────────────── */}
+      <div className="md:hidden">
+        <MineralsMobile initialMetals={initialMetals} />
+      </div>
+
+      {/* ── Desktop (≥ md) ──────────────────────────────── */}
     <div className="hidden md:flex flex-col h-screen overflow-hidden bg-terminal-bg transition-colors duration-300">
 
       {/* Price strip */}
@@ -99,5 +107,6 @@ export default async function MineralsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

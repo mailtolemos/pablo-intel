@@ -198,8 +198,8 @@ export default function NewsFeed() {
             >
               {/* Meta row */}
               <div className="flex items-center gap-1.5 mb-1.5">
-                <span className={`text-[9px] font-bold ${dc.text} shrink-0`}>{dc.icon} {dc.label}</span>
-                <span className={`text-[8px] px-1.5 py-0.5 rounded ${TIER_BADGE[t]} shrink-0`}>
+                <span className={`text-[10px] font-bold ${dc.text} shrink-0`}>{dc.icon} {dc.label}</span>
+                <span className={`text-[9px] px-1.5 py-0.5 rounded ${TIER_BADGE[t]} shrink-0`}>
                   {t === 'flash' ? '🚨' : t === 'analysis' ? '📊' : '📋'} {item.impactScore}
                 </span>
                 {fresh && (
@@ -213,7 +213,7 @@ export default function NewsFeed() {
               </div>
 
               {/* Title */}
-              <div className={`text-[10px] leading-snug font-medium ${isActive ? 'text-terminal-bright' : 'text-terminal-text'}`}>
+              <div className={`text-[11px] leading-snug font-medium ${isActive ? 'text-terminal-bright' : 'text-terminal-text'}`}>
                 {item.title}
               </div>
 

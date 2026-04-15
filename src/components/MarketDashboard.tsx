@@ -40,9 +40,9 @@ function MetricCard({
   return (
     <div className="bg-terminal-surface border border-terminal-border rounded p-2.5 flex flex-col gap-1 hover:border-terminal-blue/40 transition-colors duration-200"
       title={tooltip}>
-      <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase">{label}</div>
-      <div className="text-[15px] font-bold tabular-nums leading-none" style={{ color }}>{value}</div>
-      {sub && <div className="text-[8px] text-terminal-dim">{sub}</div>}
+      <div className="text-[9px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase">{label}</div>
+      <div className="text-[17px] font-bold tabular-nums leading-none" style={{ color }}>{value}</div>
+      {sub && <div className="text-[9px] text-terminal-dim">{sub}</div>}
     </div>
   );
 }
@@ -190,19 +190,19 @@ export default function MarketDashboard() {
         {/* Events sidebar */}
         <div className="w-[160px] shrink-0 border-l border-terminal-border flex flex-col">
           <div className="px-2.5 py-2 border-b border-terminal-border">
-            <span className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase">Key Events</span>
+            <span className="text-[9px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase">Key Events</span>
           </div>
           <div className="flex-1 overflow-y-auto p-2 space-y-2">
             {events.map((e, i) => (
               <div key={i} className="border border-terminal-border rounded px-2 py-1.5 bg-terminal-surface">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="text-[8px] font-bold font-['Orbitron']" style={{ color: e.color }}>{e.short}</span>
-                  <span className="text-[8px] font-bold text-terminal-bright"
+                  <span className="text-[9px] font-bold font-['Orbitron']" style={{ color: e.color }}>{e.short}</span>
+                  <span className="text-[9px] font-bold text-terminal-bright"
                     style={{ color: e.msAway < 3_600_000 ? 'var(--red)' : e.msAway < 86_400_000 ? 'var(--amber)' : 'var(--dim)' }}>
                     {fmtCountdown(e.msAway)}
                   </span>
                 </div>
-                <div className="text-[8px] text-terminal-dim leading-tight">{e.label}</div>
+                <div className="text-[9px] text-terminal-dim leading-tight">{e.label}</div>
               </div>
             ))}
 

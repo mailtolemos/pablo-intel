@@ -48,7 +48,7 @@ export default function ThreatMatrix() {
         <div className="dot" />
         <span>GEOPOLITICAL RISK</span>
         {disrupted > 0 && (
-          <span className="ml-auto text-terminal-red text-[8px] font-bold font-['Orbitron'] animate-pulse">
+          <span className="ml-auto text-terminal-red text-[9px] font-bold font-['Orbitron'] animate-pulse">
             ⚠ {disrupted} DISRUPTED
           </span>
         )}
@@ -66,7 +66,7 @@ export default function ThreatMatrix() {
           <>
             {/* ── Chokepoints ──────────────────────────────── */}
             <div className="px-3 pt-3 pb-2">
-              <div className="text-[7px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-2">
+              <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-2">
                 Chokepoints
               </div>
               <div className="space-y-1">
@@ -81,8 +81,8 @@ export default function ThreatMatrix() {
                         style={{ background: s.color, boxShadow: cp.status !== 'open' ? `0 0 6px ${s.color}` : 'none' }} />
                       {/* Name + flow */}
                       <div className="flex-1 min-w-0">
-                        <div className="text-[9px] font-semibold text-terminal-bright truncate">{cp.name}</div>
-                        <div className="text-[8px] text-terminal-dim">{cp.throughputMbpd} Mb/d</div>
+                        <div className="text-[10px] font-semibold text-terminal-bright truncate">{cp.name}</div>
+                        <div className="text-[9px] text-terminal-dim">{cp.throughputMbpd} Mb/d</div>
                       </div>
                       {/* Risk bar */}
                       <div className="flex flex-col items-end gap-0.5 shrink-0">
@@ -108,7 +108,7 @@ export default function ThreatMatrix() {
 
             {/* ── Active Threats ─────────────────────────── */}
             <div className="px-3 pt-2.5 pb-3">
-              <div className="text-[7px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-2">
+              <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-2">
                 Active Threats
               </div>
               {threats.length === 0 ? (
@@ -119,8 +119,8 @@ export default function ThreatMatrix() {
                     <div key={t.id} className="border border-terminal-border rounded px-2 py-2 bg-terminal-surface">
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <div className="flex-1 min-w-0">
-                          <div className="text-[9px] font-semibold text-terminal-bright leading-snug">{t.title}</div>
-                          <div className="text-[8px] text-terminal-dim mt-0.5">{t.region}</div>
+                          <div className="text-[10px] font-semibold text-terminal-bright leading-snug">{t.title}</div>
+                          <div className="text-[9px] text-terminal-dim mt-0.5">{t.region}</div>
                         </div>
                         <div className="shrink-0 flex flex-col items-end gap-0.5">
                           <span className="text-[8px] font-bold font-['Orbitron']"
@@ -136,9 +136,9 @@ export default function ThreatMatrix() {
                           </div>
                         </div>
                       </div>
-                      <div className="text-[8px] text-terminal-dim leading-snug line-clamp-2">{t.impact}</div>
+                      <div className="text-[9px] text-terminal-dim leading-snug line-clamp-2">{t.impact}</div>
                       {t.priceImpact && (
-                        <div className="mt-1 text-[8px] font-semibold" style={{ color: 'var(--amber)' }}>
+                        <div className="mt-1 text-[9px] font-semibold" style={{ color: 'var(--amber)' }}>
                           {t.priceImpact}
                         </div>
                       )}

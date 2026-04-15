@@ -39,19 +39,19 @@ function PriceCell({
                   : 'transparent',
       }}
     >
-      <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-0.5">{label}</div>
+      <div className="text-[9px] font-['Orbitron'] tracking-widest text-terminal-dim uppercase mb-0.5">{label}</div>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-[15px] font-bold text-terminal-bright tabular-nums leading-none">
+        <span className="text-[17px] font-bold text-terminal-bright tabular-nums leading-none">
           {price > 0 ? fmt(price, decimals) : '—'}
         </span>
         {price > 0 && (
-          <span className="text-[9px] font-semibold tabular-nums" style={{ color }}>
+          <span className="text-[10px] font-semibold tabular-nums" style={{ color }}>
             {arrow}{Math.abs(changePct).toFixed(2)}%
           </span>
         )}
       </div>
       {price > 0 && change !== 0 && (
-        <div className="text-[8px] tabular-nums" style={{ color }}>
+        <div className="text-[9px] tabular-nums" style={{ color }}>
           {up ? '+' : ''}{fmt(change, decimals)}
         </div>
       )}
@@ -118,7 +118,7 @@ export default function PriceStrip({ initialPrices }: Props) {
       {/* Logo */}
       <div className="flex items-center gap-2 px-4 border-r border-terminal-border shrink-0">
         <div className="w-2 h-2 rounded-full bg-terminal-blue animate-pulse" />
-        <span className="text-[11px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
+        <span className="text-[12px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
           OIL<span className="text-terminal-blue">WATCHTOWER</span>
         </span>
       </div>
@@ -141,11 +141,11 @@ export default function PriceStrip({ initialPrices }: Props) {
       {/* BRT-WTI spread badge */}
       {spread !== null && (
         <div className="flex flex-col justify-center px-3 border-r border-terminal-border shrink-0">
-          <div className="text-[7px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">BRT–WTI</div>
-          <div className="text-[13px] font-bold text-terminal-blue tabular-nums">
+          <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">BRT–WTI</div>
+          <div className="text-[15px] font-bold text-terminal-blue tabular-nums">
             +${spread.toFixed(2)}
           </div>
-          <div className="text-[7px] text-terminal-dim">
+          <div className="text-[8px] text-terminal-dim">
             {spread > 3 ? 'WIDE' : spread > 1 ? 'NORMAL' : 'TIGHT'}
           </div>
         </div>
@@ -172,12 +172,12 @@ export default function PriceStrip({ initialPrices }: Props) {
       {/* Crack spread */}
       {crack !== null && (
         <div className="flex flex-col justify-center px-3 border-r border-terminal-border shrink-0">
-          <div className="text-[7px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">3-2-1 CRACK</div>
-          <div className="text-[13px] font-bold tabular-nums"
+          <div className="text-[8px] font-['Orbitron'] tracking-widest text-terminal-dim mb-0.5">3-2-1 CRACK</div>
+          <div className="text-[15px] font-bold tabular-nums"
             style={{ color: crack > 20 ? 'var(--green)' : crack > 10 ? 'var(--amber)' : 'var(--red)' }}>
             ${crack.toFixed(1)}/bbl
           </div>
-          <div className="text-[7px] text-terminal-dim">
+          <div className="text-[8px] text-terminal-dim">
             {crack > 25 ? 'HIGH MARGIN' : crack > 15 ? 'NORMAL' : 'COMPRESSED'}
           </div>
         </div>
@@ -190,9 +190,9 @@ export default function PriceStrip({ initialPrices }: Props) {
       <div className="flex items-center gap-2 px-3 border-l border-terminal-border shrink-0">
         <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: session.color }} />
         <div className="flex flex-col">
-          <span className="text-[8px] font-['Orbitron'] font-bold tracking-wider"
+          <span className="text-[9px] font-['Orbitron'] font-bold tracking-wider"
             style={{ color: session.color }}>{session.label}</span>
-          <span className="text-[8px] text-terminal-dim tabular-nums">{time}</span>
+          <span className="text-[9px] text-terminal-dim tabular-nums">{time}</span>
         </div>
       </div>
 
@@ -200,6 +200,17 @@ export default function PriceStrip({ initialPrices }: Props) {
       <div className="flex items-center px-3 border-l border-terminal-border shrink-0">
         <ThemeToggle />
       </div>
+
+      {/* Home button */}
+      <Link href="/"
+        className="flex items-center gap-1.5 px-3 border-l border-terminal-border shrink-0 h-full transition-colors duration-200"
+        style={{ background: 'transparent' }}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(0,200,240,0.08)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+      >
+        <span className="text-[11px]">⌂</span>
+        <span className="text-[8px] font-['Orbitron'] font-bold tracking-wider" style={{ color: 'var(--blue)' }}>HOME</span>
+      </Link>
 
       {/* Live indicator */}
       <div className="flex items-center gap-1.5 px-3 border-l border-terminal-border shrink-0">
