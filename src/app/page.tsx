@@ -2,7 +2,7 @@ import type { CommodityPrice } from '@/lib/types';
 import PriceStrip from '@/components/PriceStrip';
 import NewsFeed from '@/components/NewsFeed';
 import WorldMap from '@/components/WorldMap';
-import PriceChart from '@/components/PriceChart';
+import MarketDashboard from '@/components/MarketDashboard';
 import ThreatMatrix from '@/components/ThreatMatrix';
 import AlJazeeraPanel from '@/components/AlJazeeraPanel';
 import MobileTerminal from '@/components/MobileTerminal';
@@ -50,36 +50,36 @@ export default async function TerminalPage() {
       {/* ── Desktop (≥ md) ──────────────────────────────── */}
       <div className="hidden md:flex flex-col h-screen overflow-hidden bg-terminal-bg transition-colors duration-300">
 
-        {/* Price strip — taller to fit spread bar (80px) */}
-        <div className="shrink-0 h-[80px] border-b border-terminal-border">
+        {/* Price strip */}
+        <div className="shrink-0 h-[62px] border-b border-terminal-border">
           <PriceStrip initialPrices={initialPrices} />
         </div>
 
         {/* Main 3-column grid */}
-        <div className="flex-1 min-h-0 grid grid-cols-[300px_1fr_320px] overflow-hidden">
+        <div className="flex-1 min-h-0 grid grid-cols-[300px_1fr_340px] overflow-hidden">
 
           {/* Left: News */}
           <div className="panel border-r border-terminal-border overflow-hidden flex flex-col">
             <NewsFeed />
           </div>
 
-          {/* Center: Map + Chart */}
+          {/* Center: Map + Market Dashboard */}
           <div className="flex flex-col overflow-hidden border-r border-terminal-border">
-            <div className="flex-[60] min-h-0 panel border-b border-terminal-border">
+            <div className="flex-[58] min-h-0 panel border-b border-terminal-border">
               <WorldMap />
             </div>
-            <div className="flex-[40] min-h-0 panel">
-              <PriceChart />
+            <div className="flex-[42] min-h-0 panel overflow-hidden">
+              <MarketDashboard />
             </div>
           </div>
 
-          {/* Right: Threats (top) + AJ Live (bottom) */}
+          {/* Right: AJ Live (top) + Threat Matrix (bottom) */}
           <div className="flex flex-col overflow-hidden">
-            <div className="flex-[48] min-h-0 panel border-b border-terminal-border overflow-hidden">
-              <ThreatMatrix />
-            </div>
-            <div className="flex-[52] min-h-0 panel overflow-hidden">
+            <div className="flex-[44] min-h-0 panel border-b border-terminal-border overflow-hidden">
               <AlJazeeraPanel />
+            </div>
+            <div className="flex-[56] min-h-0 panel overflow-hidden">
+              <ThreatMatrix />
             </div>
           </div>
         </div>
