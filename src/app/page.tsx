@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import PythBadge from '@/components/PythBadge';
 
 function LiveClock() {
   const [time, setTime] = useState('');
@@ -250,8 +251,12 @@ export default function PabloIntelHome() {
         <span className="text-[8px] font-['Orbitron'] text-terminal-dim tracking-widest">PABLO INTEL v1.0</span>
         <div className="h-3 w-px bg-terminal-border" />
         <span className="text-[8px] text-terminal-dim">2 modules · Crude Oil · Metals & Minerals</span>
-        <div className="ml-auto text-[8px] text-terminal-dim font-['Orbitron'] tracking-wider">
-          Data: Pyth Network · Stooq · Yahoo Finance
+        <div className="ml-auto flex items-center gap-4">
+          <PythBadge variant="bar" />
+          <div className="h-3 w-px bg-terminal-border" />
+          <span className="text-[7px] text-terminal-dim font-['Orbitron'] tracking-wider">
+            + Stooq · Yahoo Finance
+          </span>
         </div>
       </div>
     </div>

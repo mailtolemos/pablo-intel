@@ -15,6 +15,7 @@ export interface MetalPrice {
   unit:      string;
   category:  'precious' | 'base' | 'etf';
   trend:     'up' | 'down' | 'flat';
+  source:    'pyth' | 'stooq' | 'yahoo';
   history:   { t: number; v: number }[];
 }
 
@@ -24,10 +25,12 @@ const CACHE_TTL = 15_000;
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
-// ── Pyth feed IDs for precious metals ────────────────────────────────────────
+// ── Pyth feed IDs — spot CFDs with active publishers ─────────────────────────
+// Source: hermes.pyth.network/v2/price_feeds?asset_type=metals
 const PYTH_METALS: Record<string, string> = {
-  XAU: 'ef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d', // Gold/USD
-  XAG: 'f2fb02c32b055c805e7238d628e5e9dadef274376114eb1f012337cabe93871e', // Silver/USD
+  XAU: '765d2ba906dbc32ca17cc11f5310a89e9ee1f6420508c63861f2f8ba4ee34bb2', // Gold spot CFD
+  XAG: 'f2fb02c32b055c805e7238d628e5e9dadef274376114eb1f012337cabe93871e', // Silver spot CFD
+  XPT: '398e4bbc7cbf89d6648c21e08019d878967677753b3096799595c78f805a34e5', // Platinum spot CFD
 };
 
 // ── Stooq futures symbols ─────────────────────────────────────────────────────
@@ -163,6 +166,7 @@ export async function GET() {
     const histResult = histResults[i];
     const history = histResult?.status === 'fulfilled' ? (histResult.value as { t: number; v: number }[]) : [];
 
+    const usedPyth = !!(pythPrice && pythPrice.price > 0);
     metals.push({
       symbol: m.symbol, name: m.name, unit: m.unit, category: m.category,
       price:  Math.round(price     * 100) / 100,
@@ -172,6 +176,7 @@ export async function GET() {
       low:    Math.round(low       * 100) / 100,
       open:   Math.round(open      * 100) / 100,
       trend:  changePct > 0.05 ? 'up' : changePct < -0.05 ? 'down' : 'flat',
+      source: usedPyth ? 'pyth' : 'stooq',
       history,
     });
   }
@@ -195,6 +200,7 @@ export async function GET() {
       low:       Math.round(q.low   * 100) / 100,
       open:      Math.round(q.open  * 100) / 100,
       trend:     changePct > 0.05 ? 'up' : changePct < -0.05 ? 'down' : 'flat',
+      source:    'yahoo',
       history:   [],
     });
   }

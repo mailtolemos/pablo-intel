@@ -96,6 +96,12 @@ export default async function OilTerminalPage() {
             </div>
           </div>
           <div className="shrink-0 px-3 border-l border-terminal-border h-full flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--green)' }} />
+              <span className="text-[7px] font-['Orbitron'] font-bold" style={{ color: 'var(--green)' }}>PYTH</span>
+              <span className="text-[7px] text-terminal-dim font-['Orbitron']">LIVE DATA</span>
+            </div>
+            <div className="h-3 w-px bg-terminal-border" />
             <a href="/" className="text-[8px] font-['Orbitron'] text-terminal-dim hover:text-terminal-blue transition-colors tracking-wider">
               ← HOME
             </a>

@@ -2,6 +2,8 @@
 import { useEffect, useState, useRef } from 'react';
 import type { CommodityPrice } from '@/lib/types';
 import ThemeToggle from '@/components/ThemeToggle';
+import PythBadge from '@/components/PythBadge';
+import Link from 'next/link';
 
 interface Props { initialPrices: CommodityPrice[] }
 
@@ -120,6 +122,9 @@ export default function PriceStrip({ initialPrices }: Props) {
           OIL<span className="text-terminal-blue">WATCHTOWER</span>
         </span>
       </div>
+
+      {/* Pyth live badge */}
+      <PythBadge variant="strip" />
 
       {/* Crude benchmarks */}
       {(['BRT', 'WTI', 'DUB'] as const).map(sym => {

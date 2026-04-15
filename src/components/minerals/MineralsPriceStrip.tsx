@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import type { MetalPrice } from '@/app/api/metals/route';
 import ThemeToggle from '@/components/ThemeToggle';
 import Link from 'next/link';
+import PythBadge from '@/components/PythBadge';
 
 interface Props { initialMetals: MetalPrice[] }
 
@@ -110,6 +111,9 @@ export default function MineralsPriceStrip({ initialMetals }: Props) {
           MINERALS<span style={{ color: 'var(--amber)' }}>WATCHTOWER</span>
         </span>
       </div>
+
+      {/* Pyth live badge */}
+      <PythBadge variant="strip" />
 
       {/* Precious metals */}
       {(['XAU', 'XAG', 'XPT', 'XPD'] as const).map(sym => {
