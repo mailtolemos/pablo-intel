@@ -3,13 +3,13 @@ import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 
 export const metadata: Metadata = {
-  title: 'Pablo Sentinel — Commodity Intelligence Platform',
-  description: 'Real-time commodity intelligence: Oil Sentinel (Brent, WTI, tankers, chokepoints) and Minerals Sentinel (gold, silver, copper, PGMs, critical minerals).',
+  title: 'Pablo Intel — Commodity Intelligence Platform',
+  description: 'Real-time commodity intelligence: Oil Watchtower (Brent, WTI, tankers, chokepoints) and Minerals Watchtower (gold, silver, copper, PGMs, critical minerals).',
   icons: { icon: '/favicon.svg' },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Pablo Sentinel',
+    title: 'Pablo Intel',
   },
 };
 

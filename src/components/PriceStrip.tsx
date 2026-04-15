@@ -117,7 +117,7 @@ export default function PriceStrip({ initialPrices }: Props) {
       <div className="flex items-center gap-2 px-4 border-r border-terminal-border shrink-0">
         <div className="w-2 h-2 rounded-full bg-terminal-blue animate-pulse" />
         <span className="text-[11px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
-          OIL<span className="text-terminal-blue">SENTINEL</span>
+          OIL<span className="text-terminal-blue">WATCHTOWER</span>
         </span>
       </div>
 

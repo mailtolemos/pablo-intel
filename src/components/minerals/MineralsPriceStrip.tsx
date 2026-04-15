@@ -107,7 +107,7 @@ export default function MineralsPriceStrip({ initialMetals }: Props) {
       <div className="flex items-center gap-2 px-3 border-r border-terminal-border shrink-0">
         <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--amber)' }} />
         <span className="text-[11px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
-          MINERALS<span style={{ color: 'var(--amber)' }}>SENTINEL</span>
+          MINERALS<span style={{ color: 'var(--amber)' }}>WATCHTOWER</span>
         </span>
       </div>
 

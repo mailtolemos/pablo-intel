@@ -66,7 +66,7 @@ export default function MobileTerminal({ initialPrices }: Props) {
         <div className="flex items-center justify-between px-3 py-1.5 border-b border-terminal-border bg-terminal-surface">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-terminal-green animate-pulse" />
-            <span className="font-['Orbitron'] text-[10px] tracking-widest text-terminal-bright font-bold glow-blue">OIL SENTINEL</span>
+            <span className="font-['Orbitron'] text-[10px] tracking-widest text-terminal-bright font-bold glow-blue">OIL WATCHTOWER</span>
             <span className="text-terminal-dim text-[7px] tracking-widest">v2.1</span>
           </div>
           <div className="flex items-center gap-3">

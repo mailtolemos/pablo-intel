@@ -35,7 +35,7 @@ const MIN_ITEMS = [
   { label: 'PLATINUM', value: 'LIVE', color: 'var(--green)' },
 ];
 
-export default function PabloSentinelHome() {
+export default function PabloIntelHome() {
   const [hovered, setHovered] = useState<'oil' | 'minerals' | null>(null);
 
   return (
@@ -46,7 +46,7 @@ export default function PabloSentinelHome() {
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-terminal-blue animate-pulse" />
           <span className="text-[11px] font-['Orbitron'] font-bold tracking-[0.25em] text-terminal-bright">
-            PABLO<span style={{ color: 'var(--blue)' }}>SENTINEL</span>
+            PABLO<span style={{ color: 'var(--blue)' }}>INTEL</span>
           </span>
         </div>
         <div className="h-4 w-px bg-terminal-border" />
@@ -77,7 +77,7 @@ export default function PabloSentinelHome() {
               color: 'var(--bright)',
               textShadow: '0 0 40px rgba(0,200,240,0.2)',
             }}>
-            PABLO<span style={{ color: 'var(--blue)' }}>SENTINEL</span>
+            PABLO<span style={{ color: 'var(--blue)' }}>INTEL</span>
           </h1>
           <p className="text-[11px] text-terminal-dim font-['Orbitron'] tracking-widest">
             Real-time commodity intelligence · Oil · Minerals · Metals
@@ -87,7 +87,7 @@ export default function PabloSentinelHome() {
         {/* Module cards */}
         <div className="grid grid-cols-2 gap-5 w-full max-w-4xl">
 
-          {/* Oil Sentinel */}
+          {/* Oil Watchtower */}
           <Link href="/oil"
             onMouseEnter={() => setHovered('oil')}
             onMouseLeave={() => setHovered(null)}
@@ -110,7 +110,7 @@ export default function PabloSentinelHome() {
               </div>
               <div>
                 <div className="text-[14px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
-                  OIL SENTINEL
+                  OIL WATCHTOWER
                 </div>
                 <div className="text-[8px] font-['Orbitron'] text-terminal-dim tracking-wider mt-0.5">
                   Crude Intelligence Terminal
@@ -154,13 +154,13 @@ export default function PabloSentinelHome() {
                   borderColor: hovered === 'oil' ? 'rgba(0,200,240,0.5)' : 'var(--border)',
                   color: hovered === 'oil' ? 'var(--blue)' : 'var(--dim)',
                 }}>
-                <span className="text-[9px] font-['Orbitron'] font-bold tracking-widest">ENTER OIL SENTINEL</span>
+                <span className="text-[9px] font-['Orbitron'] font-bold tracking-widest">ENTER OIL WATCHTOWER</span>
                 <span className="text-[12px]">→</span>
               </div>
             </div>
           </Link>
 
-          {/* Minerals Sentinel */}
+          {/* Minerals Watchtower */}
           <Link href="/minerals"
             onMouseEnter={() => setHovered('minerals')}
             onMouseLeave={() => setHovered(null)}
@@ -183,7 +183,7 @@ export default function PabloSentinelHome() {
               </div>
               <div>
                 <div className="text-[14px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
-                  MINERALS SENTINEL
+                  MINERALS WATCHTOWER
                 </div>
                 <div className="text-[8px] font-['Orbitron'] text-terminal-dim tracking-wider mt-0.5">
                   Metals & Critical Minerals Terminal
@@ -227,7 +227,7 @@ export default function PabloSentinelHome() {
                   borderColor: hovered === 'minerals' ? 'rgba(255,179,0,0.5)' : 'var(--border)',
                   color: hovered === 'minerals' ? 'var(--amber)' : 'var(--dim)',
                 }}>
-                <span className="text-[9px] font-['Orbitron'] font-bold tracking-widest">ENTER MINERALS SENTINEL</span>
+                <span className="text-[9px] font-['Orbitron'] font-bold tracking-widest">ENTER MINERALS WATCHTOWER</span>
                 <span className="text-[12px]">→</span>
               </div>
             </div>
@@ -247,7 +247,7 @@ export default function PabloSentinelHome() {
 
       {/* ── Bottom bar ───────────────────────────────────────────── */}
       <div className="shrink-0 h-7 border-t border-terminal-border bg-terminal-panel flex items-center px-4 gap-4">
-        <span className="text-[8px] font-['Orbitron'] text-terminal-dim tracking-widest">PABLO SENTINEL v1.0</span>
+        <span className="text-[8px] font-['Orbitron'] text-terminal-dim tracking-widest">PABLO INTEL v1.0</span>
         <div className="h-3 w-px bg-terminal-border" />
         <span className="text-[8px] text-terminal-dim">2 modules · Crude Oil · Metals & Minerals</span>
         <div className="ml-auto text-[8px] text-terminal-dim font-['Orbitron'] tracking-wider">

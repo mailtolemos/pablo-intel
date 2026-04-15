@@ -25,7 +25,7 @@ let newsCache: NewsCache | null = null;
 let cacheTime = 0;
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-const UA = 'Mozilla/5.0 (compatible; MineralsSentinel/1.0; +https://pablo-sentinel.vercel.app)';
+const UA = 'Mozilla/5.0 (compatible; MineralsWatchtower/1.0; +https://pablo-intel.vercel.app)';
 
 // ── RSS feeds focused on metals, mining, and critical minerals ───────────────
 const RSS_FEEDS = [

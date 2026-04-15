@@ -237,7 +237,7 @@ function buildRecap(
 
   // ── 5. Title ─────────────────────────────────────────────────────────────────
   const brentDir = brent ? (brent.changePct >= 0 ? '▲' : '▼') : '';
-  const title    = `OIL SENTINEL RECAP — ${now.toUTCString().slice(0, 16)} ${brentDir} Brent ${brent ? brentStr : ''}`;
+  const title    = `OIL WATCHTOWER RECAP — ${now.toUTCString().slice(0, 16)} ${brentDir} Brent ${brent ? brentStr : ''}`;
 
   return {
     generatedAt: now.toISOString(),
@@ -257,11 +257,11 @@ function buildRecap(
 // ── Telegram message formatter ────────────────────────────────────────────────
 
 function formatTelegramMessage(recap: RecapPayload): string {
-  const header = `<b>🛢️ OIL SENTINEL — 2H INTEL BRIEF</b>\n<i>${new Date(recap.generatedAt).toUTCString().slice(0, 22)} UTC</i>\n\n`;
+  const header = `<b>🛢️ OIL WATCHTOWER — 2H INTEL BRIEF</b>\n<i>${new Date(recap.generatedAt).toUTCString().slice(0, 22)} UTC</i>\n\n`;
   const sections = recap.sections.map(s =>
     `<b>${s.heading}</b>\n${s.body}`
   ).join('\n\n');
-  const footer = '\n\n<i>Powered by Oil Sentinel Terminal — oil-sentinel-terminal.vercel.app</i>';
+  const footer = '\n\n<i>Powered by Pablo Intel — pablo-intel.vercel.app</i>';
   return header + sections + footer;
 }
 

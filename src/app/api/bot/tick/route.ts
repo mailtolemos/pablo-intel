@@ -1,5 +1,5 @@
 /**
- * /api/bot/tick — OilSentinel automated bot tick.
+ * /api/bot/tick — OilWatchtower automated bot tick.
  *
  * Called by Vercel Cron every 15 minutes.
  * Orchestrates: news ingestion → scoring → Telegram alerts → price checks → scheduler.
@@ -185,7 +185,7 @@ function formatFlash(title: string, source: string, score: number, direction: st
   const icon = direction === 'bullish' ? '🟢' : direction === 'bearish' ? '🔴' : '🟡';
   const driverStr = drivers.slice(0, 3).join(', ') || 'general';
   return (
-    `⚡ <b>FLASH ALERT — OIL SENTINEL</b>\n` +
+    `⚡ <b>FLASH ALERT — OIL WATCHTOWER</b>\n` +
     `${'━'.repeat(30)}\n` +
     `<b>${title}</b>\n\n` +
     `📡 Source: ${source}  ·  🎯 Score: ${score}/100\n` +
@@ -197,7 +197,7 @@ function formatFlash(title: string, source: string, score: number, direction: st
 function formatAnalysis(title: string, source: string, score: number, direction: string, drivers: string[], url: string): string {
   const icon = direction === 'bullish' ? '📈' : direction === 'bearish' ? '📉' : '↔️';
   return (
-    `📊 <b>OIL SENTINEL — Analysis</b>\n` +
+    `📊 <b>OIL WATCHTOWER | PABLO INTEL — Analysis</b>\n` +
     `${'─'.repeat(26)}\n` +
     `<b>${title}</b>\n\n` +
     `📡 ${source}  ·  Score: ${score}  ${icon} ${direction.toUpperCase()}\n` +
@@ -266,7 +266,7 @@ async function fetchFeedItems(url: string, topic: string): Promise<RawArticle[]>
   const source = new URL(url).hostname.replace('www.','').replace('news.google.com','GNews').replace('feeds.','').split('.')[0];
   try {
     const r = await fetch(url, {
-      headers: { 'User-Agent': 'OilSentinelBot/3.0' },
+      headers: { 'User-Agent': 'PabloIntelBot/3.0' },
       signal: AbortSignal.timeout(4000),
     });
     if (!r.ok) return [];

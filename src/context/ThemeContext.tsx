@@ -19,7 +19,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem('oil-sentinel-theme') as Theme | null;
+    const saved = localStorage.getItem('oil-watchtower-theme') as Theme | null;
     if (saved === 'light' || saved === 'dark') {
       setTheme(saved);
     }
@@ -28,7 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mounted) return;
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('oil-sentinel-theme', theme);
+    localStorage.setItem('oil-watchtower-theme', theme);
   }, [theme, mounted]);
 
   // Set initial attribute synchronously to avoid flash

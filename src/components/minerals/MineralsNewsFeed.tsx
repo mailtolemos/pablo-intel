@@ -88,7 +88,7 @@ export default function MineralsNewsFeed() {
       {/* Header */}
       <div className="section-header shrink-0">
         <div className="dot" style={{ background: 'var(--amber)', boxShadow: '0 0 6px var(--amber)' }} />
-        <span>MINERALS INTEL</span>
+        <span>MINERALS WATCHTOWER</span>
         <span className="ml-auto text-[8px] text-terminal-dim">
           {updatedAt ? timeAgo(updatedAt) : '—'}
         </span>

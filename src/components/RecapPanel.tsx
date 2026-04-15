@@ -178,7 +178,7 @@ export default function RecapPanel() {
         >
           Refresh
         </button>
-        <span className="text-[8px] text-terminal-dim ml-auto">OIL SENTINEL AI</span>
+        <span className="text-[8px] text-terminal-dim ml-auto">OIL WATCHTOWER AI</span>
         <div className="w-1.5 h-1.5 rounded-full bg-terminal-amber" />
       </div>
     </div>

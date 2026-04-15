@@ -99,7 +99,7 @@ export default async function OilTerminalPage() {
             <a href="/" className="text-[8px] font-['Orbitron'] text-terminal-dim hover:text-terminal-blue transition-colors tracking-wider">
               ← HOME
             </a>
-            <span className="text-[9px] text-terminal-dim font-['Orbitron'] tracking-wider">OIL SENTINEL</span>
+            <span className="text-[9px] text-terminal-dim font-['Orbitron'] tracking-wider">OIL WATCHTOWER</span>
           </div>
         </div>
       </div>

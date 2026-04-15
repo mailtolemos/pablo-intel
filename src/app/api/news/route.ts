@@ -375,7 +375,7 @@ function isOilRelevant(title: string, summary: string, topic: string): boolean {
 async function fetchFeed(feedUrl: string, source: string, topic: string): Promise<NewsItem[]> {
   const r = await fetch(feedUrl, {
     headers: {
-      'User-Agent': 'OilSentinel/2.0 (crude oil market intelligence)',
+      'User-Agent': 'OilWatchtower/2.0 (crude oil market intelligence)',
       'Accept': 'application/rss+xml, application/xml, text/xml, */*',
     },
     signal: AbortSignal.timeout(4500), // 4.5s — reduced from 7s to cap slow feeds

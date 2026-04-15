@@ -21,7 +21,7 @@ async function getInitialMetals(): Promise<MetalPrice[]> {
 }
 
 const TICKER_ITEMS = [
-  '⬡ MINERALS SENTINEL — Real-time precious & base metals intelligence',
+  '⬡ MINERALS WATCHTOWER — Real-time precious & base metals intelligence',
   '🟡 GOLD: Central bank buying >1,000t/year provides structural floor',
   '⚪ SILVER: Gold/silver ratio historically elevated — potential mean reversion',
   '🔴 CHINA: REE export controls on gallium, germanium, graphite active since 2023',
@@ -89,7 +89,7 @@ export default async function MineralsPage() {
           <a href="/" className="text-[8px] font-['Orbitron'] text-terminal-dim hover:text-terminal-amber transition-colors tracking-wider">
             ← HOME
           </a>
-          <span className="text-[9px] text-terminal-dim font-['Orbitron'] tracking-wider">MINERALS SENTINEL</span>
+          <span className="text-[9px] text-terminal-dim font-['Orbitron'] tracking-wider">MINERALS WATCHTOWER</span>
         </div>
       </div>
     </div>
