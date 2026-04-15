@@ -3,13 +3,13 @@ import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 
 export const metadata: Metadata = {
-  title: 'OIL SENTINEL TERMINAL — Live Crude Intelligence',
-  description: 'Real-time oil futures intelligence: Brent, WTI, live tanker tracking, chokepoints, geopolitical threat matrix and price projections.',
+  title: 'Pablo Sentinel — Commodity Intelligence Platform',
+  description: 'Real-time commodity intelligence: Oil Sentinel (Brent, WTI, tankers, chokepoints) and Minerals Sentinel (gold, silver, copper, PGMs, critical minerals).',
   icons: { icon: '/favicon.svg' },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Oil Sentinel',
+    title: 'Pablo Sentinel',
   },
 };
 

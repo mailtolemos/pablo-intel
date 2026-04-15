@@ -204,3 +204,4 @@ export default function PriceStrip({ initialPrices }: Props) {
     </div>
   );
 }
+
