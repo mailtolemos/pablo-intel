@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import PythBadge from '@/components/PythBadge';
+import SignalsCard from '@/components/SignalsCard';
 
 function LiveClock() {
   const [time, setTime] = useState('');
@@ -37,7 +38,7 @@ const MIN_ITEMS = [
 ];
 
 export default function PabloIntelHome() {
-  const [hovered, setHovered] = useState<'oil' | 'minerals' | null>(null);
+  const [hovered, setHovered] = useState<'oil' | 'minerals' | 'signals' | null>(null);
 
   return (
     <div className="h-screen flex flex-col bg-terminal-bg overflow-hidden font-mono">
@@ -86,7 +87,7 @@ export default function PabloIntelHome() {
         </div>
 
         {/* Module cards */}
-        <div className="grid grid-cols-2 gap-5 w-full max-w-4xl">
+        <div className="grid grid-cols-3 gap-5 w-full max-w-6xl">
 
           {/* Oil Watchtower */}
           <Link href="/oil"
@@ -233,6 +234,13 @@ export default function PabloIntelHome() {
               </div>
             </div>
           </Link>
+          {/* Live Signals — third card (not a link, signals are displayed inline) */}
+          <div
+            onMouseEnter={() => setHovered('signals')}
+            onMouseLeave={() => setHovered(null)}>
+            <SignalsCard hovered={hovered === 'signals'} />
+          </div>
+
         </div>
 
         {/* Bottom tagline */}
@@ -250,7 +258,7 @@ export default function PabloIntelHome() {
       <div className="shrink-0 h-7 border-t border-terminal-border bg-terminal-panel flex items-center px-4 gap-4">
         <span className="text-[8px] font-['Orbitron'] text-terminal-dim tracking-widest">PABLO INTEL v1.0</span>
         <div className="h-3 w-px bg-terminal-border" />
-        <span className="text-[8px] text-terminal-dim">2 modules · Crude Oil · Metals & Minerals</span>
+        <span className="text-[8px] text-terminal-dim">3 modules · Crude Oil · Metals & Minerals · Live Signals</span>
         <div className="ml-auto flex items-center gap-4">
           <PythBadge variant="bar" />
           <div className="h-3 w-px bg-terminal-border" />
