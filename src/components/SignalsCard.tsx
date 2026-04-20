@@ -123,7 +123,7 @@ function SignalRow({ signal }: { signal: AssetSignal }) {
   );
 }
 
-export default function SignalsCard({ hovered }: { hovered: boolean }) {
+export default function SignalsCard({ hovered, preview = false }: { hovered: boolean; preview?: boolean }) {
   const [data,    setData]    = useState<SignalsPayload | null>(null);
   const [loading, setLoading] = useState(true);
 

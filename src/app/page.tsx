@@ -234,12 +234,75 @@ export default function PabloIntelHome() {
               </div>
             </div>
           </Link>
-          {/* Live Signals — third card (not a link, signals are displayed inline) */}
-          <div
+          {/* Live Signals — third card (link to signals page) */}
+          <Link href="/signals"
             onMouseEnter={() => setHovered('signals')}
-            onMouseLeave={() => setHovered(null)}>
-            <SignalsCard hovered={hovered === 'signals'} />
-          </div>
+            onMouseLeave={() => setHovered(null)}
+            className="group relative flex flex-col overflow-hidden rounded border transition-all duration-300 cursor-pointer"
+            style={{
+              background: hovered === 'signals'
+                ? 'rgba(255,100,0,0.05)' : 'var(--panel)',
+              borderColor: hovered === 'signals'
+                ? 'rgba(255,100,0,0.5)' : 'var(--border)',
+              boxShadow: hovered === 'signals'
+                ? '0 0 40px rgba(255,100,0,0.08), inset 0 1px 0 rgba(255,100,0,0.12)' : 'none',
+            }}>
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-terminal-border">
+              <div className="w-8 h-8 rounded flex items-center justify-center text-lg"
+                style={{ background: 'rgba(255,100,0,0.1)', border: '1px solid rgba(255,100,0,0.3)' }}>
+                ⚡
+              </div>
+              <div>
+                <div className="text-[14px] font-['Orbitron'] font-bold tracking-widest text-terminal-bright">
+                  LIVE SIGNALS
+                </div>
+                <div className="text-[8px] font-['Orbitron'] text-terminal-dim tracking-wider mt-0.5">
+                  Trading Analysis · Decision Support
+                </div>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--dim)' }} />
+              </div>
+            </div>
+
+            {/* Signals preview */}
+            <div className="flex-1 p-4 space-y-2.5 overflow-hidden">
+              <SignalsCard hovered={hovered === 'signals'} preview />
+            </div>
+
+            {/* Features & tags */}
+            <div className="px-5 pb-5">
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                <span className="text-[7px] font-['Orbitron'] px-2 py-0.5 rounded tracking-wider"
+                  style={{ background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', color: 'rgba(255,100,0,0.9)' }}>
+                  RSI Analysis
+                </span>
+                <span className="text-[7px] font-['Orbitron'] px-2 py-0.5 rounded tracking-wider"
+                  style={{ background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', color: 'rgba(255,100,0,0.9)' }}>
+                  Risk/Reward
+                </span>
+                <span className="text-[7px] font-['Orbitron'] px-2 py-0.5 rounded tracking-wider"
+                  style={{ background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', color: 'rgba(255,100,0,0.9)' }}>
+                  Multi-Asset
+                </span>
+                <span className="text-[7px] font-['Orbitron'] px-2 py-0.5 rounded tracking-wider"
+                  style={{ background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', color: 'rgba(255,100,0,0.9)' }}>
+                  Decision Matrix
+                </span>
+              </div>
+
+              {/* Enter button */}
+              <div className="flex items-center justify-between py-2.5 px-4 rounded border transition-all duration-200"
+                style={{
+                  background: hovered === 'signals' ? 'rgba(255,100,0,0.1)' : 'var(--surface)',
+                  borderColor: hovered === 'signals' ? 'rgba(255,100,0,0.5)' : 'var(--border)',
+                  color: hovered === 'signals' ? 'rgba(255,100,0,0.9)' : 'var(--dim)',
+                }}>
+                <span className="text-[9px] font-['Orbitron'] font-bold tracking-widest">ENTER SIGNALS TERMINAL</span>
+                <span className="text-[12px]">→</span>
+              </div>
+            </div>
+          </Link>
 
         </div>
 
