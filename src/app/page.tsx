@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import PythBadge from '@/components/PythBadge';
-import SignalsCard from '@/components/SignalsCard';
 
 function LiveClock() {
   const [time, setTime] = useState('');
@@ -267,7 +266,10 @@ export default function PabloIntelHome() {
 
             {/* Signals preview */}
             <div className="flex-1 p-4 space-y-2.5 overflow-hidden">
-              <SignalsCard hovered={hovered === 'signals'} preview />
+              <p className="text-[10px] text-terminal-dim leading-relaxed">
+                Real-time price tracking for crypto, commodities, stocks & indexes.
+                Monitors BTC, ETH, HYPE, SOL, PYTH, FOGO, GOLD, SP500, BRENT, WTI for moves &gt;0.75% in 5-minute windows.
+              </p>
             </div>
 
             {/* Features & tags */}
