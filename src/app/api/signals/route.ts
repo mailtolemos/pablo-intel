@@ -227,25 +227,43 @@ function transformPricesToSignalInputs(
   changePercent: number;
   historicalData?: Array<{ close: number; high: number; low: number; volume: number }>;
 }> {
-  if (!pricesData || !pricesData.commodities) {
+  if (!pricesData) {
     return [];
   }
 
-  return pricesData.commodities
-    .map((commodity: any) => ({
-      symbol: commodity.symbol || commodity.name?.toUpperCase(),
-      name: commodity.name,
-      price: commodity.price,
-      change: commodity.change || 0,
-      changePercent: commodity.changePercent || 0,
-      historicalData: commodity.sparkline
-        ? commodity.sparkline.map((price: number, index: number) => ({
-            close: price,
-            high: price * 1.01,
-            low: price * 0.99,
-            volume: 1000000,
-          }))
-        : [],
-    }))
+  // Handle both old format (commodities) and new format (prices)
+  const pricesArray = pricesData.prices || pricesData.commodities || [];
+
+  return pricesArray
+    .map((item: any) => {
+      // Extract historical data from history array (contains {t, v} objects)
+      let historicalData: Array<{ close: number; high: number; low: number; volume: number }> = [];
+
+      if (item.history && Array.isArray(item.history)) {
+        historicalData = item.history.map((point: any) => ({
+          close: point.v || 0,
+          high: (point.v || 0) * 1.01,
+          low: (point.v || 0) * 0.99,
+          volume: 1000000,
+        }));
+      } else if (item.sparkline && Array.isArray(item.sparkline)) {
+        // Fallback for old sparkline format
+        historicalData = item.sparkline.map((price: number) => ({
+          close: price,
+          high: price * 1.01,
+          low: price * 0.99,
+          volume: 1000000,
+        }));
+      }
+
+      return {
+        symbol: item.symbol || item.name?.toUpperCase(),
+        name: item.name || item.symbol,
+        price: item.price || 0,
+        change: item.change || item.changePct || 0,
+        changePercent: item.changePct || item.change || 0,
+        historicalData,
+      };
+    })
     .filter((input: any) => input.historicalData.length > 0);
 }
