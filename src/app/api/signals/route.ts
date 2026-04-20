@@ -284,3 +284,4 @@ function transformPricesToSignalInputs(
     })
     .filter((input: any) => input.historicalData.length > 0);
 }
+// Force redeploy - Mon Apr 20 16:20:13 WEST 2026
