@@ -42,16 +42,19 @@ let lastUpdate = new Date().toISOString();
 export async function GET(request: NextRequest): Promise<NextResponse<SignalsPayload>> {
   try {
     // Try to fetch prices and generate signals
-    const signals = await generateLiveSignals();
+    const liveSignals = await generateLiveSignals();
 
-    if (Object.keys(signals).length > 0) {
-      cachedSignals = signals;
+    // Merge live signals with manually posted signals (live takes priority)
+    const mergedSignals = { ...cachedSignals, ...liveSignals };
+
+    if (Object.keys(mergedSignals).length > 0) {
+      cachedSignals = mergedSignals;
       lastUpdate = new Date().toISOString();
 
       return NextResponse.json({
-        signals,
+        signals: mergedSignals,
         updatedAt: lastUpdate,
-        source: "live",
+        source: Object.keys(liveSignals).length > 0 ? "live" : "cached",
       });
     }
 
