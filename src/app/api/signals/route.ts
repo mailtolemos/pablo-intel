@@ -19,7 +19,11 @@ let storeLastUpdate: string = new Date().toISOString();
 export async function GET(request: NextRequest) {
   try {
     // Fetch current prices from the prices API
-    const pricesResponse = await fetch("http://localhost:3000/api/prices", {
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}`;
+
+    const pricesResponse = await fetch(`${baseUrl}/api/prices`, {
       cache: "no-store",
     });
 
