@@ -21,3 +21,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
+// Trigger deploy: rewrites /bags -> pablito-bags
